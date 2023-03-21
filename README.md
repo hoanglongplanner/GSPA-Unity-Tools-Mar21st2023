@@ -6,4 +6,4 @@ However, there will be no documentation nor help to understand what these tools 
 Unity Engine Version:
 - Unity 2021.3.10F1
 
-TLDR: Research & Apply to your own project in Unity Engine
+TLDR: Research & Apply these tools to your own project in Unity Engine
