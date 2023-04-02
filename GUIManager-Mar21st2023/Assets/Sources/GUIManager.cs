@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 
 //ADD LIBRARY
-using GUIManagerV00_Mar21st2023;
+using APIGUI_Mar21st2023;
 
-namespace GUIManagerV00_Mar21st2023 {
+namespace APIGUI_Mar21st2023 {
     public enum ENUM_GUIELEMENT_TEXT_TYPE {
         HIGHSCORE,
         LIFE,
