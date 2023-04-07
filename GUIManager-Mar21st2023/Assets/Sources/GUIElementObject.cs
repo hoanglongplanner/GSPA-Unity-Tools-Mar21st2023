@@ -13,7 +13,16 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-public interface IGUIElementObject {
-    public bool GetVisibilityStatus();
-    public void SetVisibility(bool status);    
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class GUIElementObject : MonoBehaviour, IGUIElementObject {
+    public bool GetVisibilityStatus() {
+        throw new System.NotImplementedException();
+    }
+
+    public void SetVisibility(bool status) {
+        throw new System.NotImplementedException();
+    }
 }

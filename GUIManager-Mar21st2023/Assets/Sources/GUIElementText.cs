@@ -18,17 +18,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 
-//ADDED
-using APIGUI_Mar21st2023;
-
-namespace APIGUI_Mar21st2023 {
-    public class GUIElementText : MonoBehaviour, IGUIElementText {
-
-        private TextMeshProUGUI m_TMPRO;
-
-        private void Start() { m_TMPRO = this.GetComponent<TextMeshProUGUI>(); }
-        public void SetText(string text) { m_TMPRO.SetText(text); }
-    }
+public class GUIElementText : MonoBehaviour, IGUIElementText {
+    public ENUM_GUIELEMENT_TEXT_TYPE type;
+    private TextMeshProUGUI m_TMPRO;
+    private void Start() => m_TMPRO = this.GetComponent<TextMeshProUGUI>();
+    public void SetText(string text) => m_TMPRO.SetText(text);
+    public void SetColor(Color color) => m_TMPRO.color = color;
+    public bool IsType(ENUM_GUIELEMENT_TEXT_TYPE compare) { return type == compare; }    
 }
 
 

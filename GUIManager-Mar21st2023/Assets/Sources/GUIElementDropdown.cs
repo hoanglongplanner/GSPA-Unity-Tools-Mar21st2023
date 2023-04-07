@@ -13,7 +13,15 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-public interface IGUIElementObject {
-    public bool GetVisibilityStatus();
-    public void SetVisibility(bool status);    
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class GUIElementDropdown : MonoBehaviour {
+
+    [SerializeField] private ENUM_GUIELEMENT_DROPDOWN_TYPE type;
+
+    private void Start() {
+        
+    }
 }

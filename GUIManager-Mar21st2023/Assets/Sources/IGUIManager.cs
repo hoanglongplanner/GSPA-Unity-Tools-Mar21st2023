@@ -13,13 +13,20 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-namespace APIGUI_Mar21st2023 {
-    public interface IGUIManager {
-        public void InitGUI();
-        public void OnTextChange();
-        public void OnDropdownSelected();
-        public void OnSliderChange();
-    }
+public interface IGUIManager {    
+    //Get Functions
+    public System.Collections.Generic.List<GUIElementText> GetAllTypeGUIElementText(ENUM_GUIELEMENT_TEXT_TYPE type);
+
+    //Functions
+    public void InitGUI();
+    public void UpdateText(ENUM_GUIELEMENT_TEXT_TYPE type);
+    public void OnTextChange(ENUM_GUIELEMENT_TEXT_TYPE type);
+    public void OnButtonBehavior();
+    public void CreateSlider();
+    public void OnSliderChange();
+    public void CreateDropdown(GUIElementDropdown elementDropdown, ENUM_GUIELEMENT_DROPDOWN_TYPE type);
+    public void OnDropdownSelected(GUIElementDropdown elementDropdown, ENUM_GUIELEMENT_DROPDOWN_TYPE type);    
 }
+
 
 

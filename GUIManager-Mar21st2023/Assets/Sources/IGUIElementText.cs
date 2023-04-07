@@ -15,4 +15,6 @@ limitations under the License.
 
 public interface IGUIElementText {
     public void SetText(string text);
+    public void SetColor(UnityEngine.Color color);
+    public bool IsType(ENUM_GUIELEMENT_TEXT_TYPE compare);
 }
