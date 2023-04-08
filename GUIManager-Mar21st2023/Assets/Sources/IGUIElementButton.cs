@@ -13,6 +13,10 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-public interface IGUIElementButton {
+using UnityEngine;
+using UnityEngine.EventSystems;
 
+public interface IGUIElementButton : IPointerClickHandler, IPointerEnterHandler, IPointerExitHandler {
+    public bool IsType(ENUM_GUIELEMENT_BUTTON_TYPE type);
+    public void OnGUIElementButton(IGUIElementButton _button, ENUM_GUIELEMENT_BUTTON_TYPE _buttonType, ENUM_GUIELEMENT_BUTTON_POINTER_TYPE _buttonPointerType);
 }

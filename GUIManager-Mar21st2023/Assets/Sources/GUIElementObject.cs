@@ -18,11 +18,8 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class GUIElementObject : MonoBehaviour, IGUIElementObject {
-    public bool GetVisibilityStatus() {
-        throw new System.NotImplementedException();
-    }
-
-    public void SetVisibility(bool status) {
-        throw new System.NotImplementedException();
-    }
+    [SerializeField] private ENUM_GUIELEMENT_OBJECT_TYPE enum_type;
+    public bool IsType(ENUM_GUIELEMENT_OBJECT_TYPE type) { return enum_type == type; }
+    public bool GetVisibleStatus() { return this.gameObject.activeInHierarchy; }
+    public void SetVisible(bool status) => this.gameObject.SetActive(status);
 }

@@ -14,6 +14,7 @@ limitations under the License.
 */
 
 public interface IGUIElementObject {
-    public bool GetVisibilityStatus();
-    public void SetVisibility(bool status);    
+    public bool IsType(ENUM_GUIELEMENT_OBJECT_TYPE type);
+    public bool GetVisibleStatus();
+    public void SetVisible(bool status);    
 }
