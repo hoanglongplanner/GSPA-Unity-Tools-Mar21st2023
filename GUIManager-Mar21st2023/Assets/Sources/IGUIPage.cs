@@ -13,6 +13,8 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-public interface IGUIPage {
-
+public interface IGUIPage : IGUIElement {
+    public bool IsType(ENUM_GUIPAGE_TYPE _type);
+    public bool GetActiveStatus();
+    public void SetActive();
 }

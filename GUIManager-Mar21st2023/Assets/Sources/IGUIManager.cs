@@ -23,13 +23,27 @@ public interface IGUIManager {
 
     //Functions
     public void InitGUI();
-    public void UpdateText(ENUM_GUIELEMENT_TEXT_TYPE _type);
+    public void SetupGUIManager(UnityEngine.Transform _transform = null, bool _isItself = false);
+    public void CheckGUIElementLists(UnityEngine.Transform _transform);
+
+    //GUI Element Object
+    public void SetGUIElementObject(ENUM_GUIELEMENT_OBJECT_TYPE _type);
+    public void OnGUIElementObject(ENUM_GUIELEMENT_OBJECT_TYPE _type);
+
+    //GUI Element Text
+    public void SetGUIElementText(ENUM_GUIELEMENT_TEXT_TYPE _type);
     public void OnGUIElementText(ENUM_GUIELEMENT_TEXT_TYPE _type);
-    public void OnGUIElementButton();
-    public void CreateSlider();
+
+    //GUI Element Button    
+    public void OnGUIElementButton(IGUIElementButton _button, ENUM_GUIELEMENT_BUTTON_TYPE _buttonType, ENUM_GUIELEMENT_BUTTON_POINTER_TYPE _buttonPointerType);
+
+    //GUI Element Slider
+    public void SetGUIElementSlider();
     public void OnGUIElementSlider();
-    public void CreateDropdown(GUIElementDropdown _dropdown, ENUM_GUIELEMENT_DROPDOWN_TYPE type);
-    public void OnDropdownSelected(GUIElementDropdown _dropdown, ENUM_GUIELEMENT_DROPDOWN_TYPE type);    
+
+    //GUI Element Dropdown
+    public void SetGUIElementDropdown(GUIElementDropdown _dropdown, ENUM_GUIELEMENT_DROPDOWN_TYPE _type);
+    public void OnGUIElementDropdown(GUIElementDropdown _dropdown, ENUM_GUIELEMENT_DROPDOWN_TYPE _type);    
 }
 
 

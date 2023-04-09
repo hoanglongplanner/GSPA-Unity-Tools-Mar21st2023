@@ -18,8 +18,14 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class GUIElementObject : MonoBehaviour, IGUIElementObject {
+    [SerializeField] private IGUIManager m_guiManager;
     [SerializeField] private ENUM_GUIELEMENT_OBJECT_TYPE enum_type;
+    public void SetGUIManager(IGUIManager _guiManager) => m_guiManager = _guiManager;
     public bool IsType(ENUM_GUIELEMENT_OBJECT_TYPE type) { return enum_type == type; }
-    public bool GetVisibleStatus() { return this.gameObject.activeInHierarchy; }
-    public void SetVisible(bool status) => this.gameObject.SetActive(status);
+    public bool GetActiveStatus() { return this.gameObject.activeInHierarchy; }
+    public void SetActive(bool status) { 
+        this.gameObject.SetActive(status);
+        OnGUIElementObject(enum_type); //run-behavior
+    }
+    public void OnGUIElementObject(ENUM_GUIELEMENT_OBJECT_TYPE _type) => m_guiManager.OnGUIElementObject(_type);
 }

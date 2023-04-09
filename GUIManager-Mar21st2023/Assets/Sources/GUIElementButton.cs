@@ -19,12 +19,18 @@ using UnityEngine;
 using TMPro;
 using UnityEngine.EventSystems;
 
-public class GUIElementButton : MonoBehaviour, IGUIElementButton {
+public class GUIElementButton : MonoBehaviour, IGUIElement, IGUIElementButton {
     [SerializeField] private IGUIManager m_guiManager;
-    [SerializeField] private ENUM_GUIELEMENT_BUTTON_TYPE enum_buttonType; 
-    private TextMeshProUGUI m_textMeshProUGUI;    
+    [SerializeField] private ENUM_GUIELEMENT_BUTTON_TYPE enum_buttonType;
+    [SerializeField] private TextMeshProUGUI m_textMeshProUGUI;
+    [SerializeField] private bool isMouseHold;
+    [SerializeField] private bool isMouseHover;
 
     void Start() => m_textMeshProUGUI = this.GetComponent<TextMeshProUGUI>();
+
+    public void SetGUIManager(IGUIManager _guiManager) => m_guiManager = _guiManager;
+
+    public void SetText(string _message) => m_textMeshProUGUI.SetText(_message);
 
     public bool IsType(ENUM_GUIELEMENT_BUTTON_TYPE type) { return enum_buttonType == type; }
 
@@ -43,7 +49,16 @@ public class GUIElementButton : MonoBehaviour, IGUIElementButton {
         OnGUIElementButton(this, enum_buttonType, ENUM_GUIELEMENT_BUTTON_POINTER_TYPE.K_ON_EXIT);
     }
 
-    public void OnGUIElementButton(IGUIElementButton _button, ENUM_GUIELEMENT_BUTTON_TYPE _buttonType, ENUM_GUIELEMENT_BUTTON_POINTER_TYPE _buttonPointerType) {
-        
+    public void OnPointerDown(PointerEventData eventData) {
+        throw new System.NotImplementedException();
     }
+
+    public void OnPointerUp(PointerEventData eventData) {
+        throw new System.NotImplementedException();
+    }
+
+    public void OnGUIElementButton(
+        IGUIElementButton _button,
+        ENUM_GUIELEMENT_BUTTON_TYPE _buttonType,
+        ENUM_GUIELEMENT_BUTTON_POINTER_TYPE _buttonPointerType) => m_guiManager.OnGUIElementButton(_button, _buttonType, _buttonPointerType);    
 }

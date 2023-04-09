@@ -16,7 +16,8 @@ limitations under the License.
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public interface IGUIElementButton : IPointerClickHandler, IPointerEnterHandler, IPointerExitHandler {
-    public bool IsType(ENUM_GUIELEMENT_BUTTON_TYPE type);
+public interface IGUIElementButton : IPointerDownHandler, IPointerUpHandler, IPointerClickHandler, IPointerEnterHandler, IPointerExitHandler {
+    public bool IsType(ENUM_GUIELEMENT_BUTTON_TYPE _type);
+    public void SetText(string _message);
     public void OnGUIElementButton(IGUIElementButton _button, ENUM_GUIELEMENT_BUTTON_TYPE _buttonType, ENUM_GUIELEMENT_BUTTON_POINTER_TYPE _buttonPointerType);
 }
