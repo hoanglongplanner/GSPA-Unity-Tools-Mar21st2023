@@ -6,5 +6,5 @@ using APIHelperVioletRoot;
 
 public class TestHelperVioletScript : MonoBehaviour {
     public Vector3 vec3;
-    private void Start() => APIHelperVioletRoot.APIHelperViolet.HelloWorld();
+    private void Start() => APIHelperVioletRoot.ToolLog.Error("Catastrophic Error Detected");    
 }

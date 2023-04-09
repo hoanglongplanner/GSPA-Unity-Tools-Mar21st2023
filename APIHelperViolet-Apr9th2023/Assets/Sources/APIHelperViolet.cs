@@ -40,19 +40,14 @@ namespace APIHelperVioletRoot {
     /// <summary>
     /// Exclusive Class for API Helper Violet
     /// </summary>
-    public static class APIHelperViolet {       
+    public static class APIHelperViolet {
         /// <summary>
         /// Send Hello World message to Unity Console
         /// </summary>
-        public static void HelloWorld() => LogSystem.Info("Hello there, I'm Helper Violet. What can I assist you with ?");
+        public static void HelloWorld() => ToolLog.Info("Hello there, I'm Helper Violet. What can I assist you with ?");
     }
 
     public static class Core { }
-
-    /// <summary>
-    /// Class for mathetical
-    /// </summary>
-    public static class Math { }
 
     public static class Transform {
 
@@ -71,19 +66,31 @@ namespace APIHelperVioletRoot {
             public float x { get; set; }
             public float y { get; set; }
             public float z { get; set; }
-            public Vector3(float _x, float _y, float _z) {                                
+            public Vector3(float _x, float _y, float _z) {
                 x = _x;
                 y = _y;
                 z = _z;
-            }            
-            public Vector3 Zero() { return new Vector3(0, 0, 0); }
-            public Vector3 One() { return new Vector3(1, 1, 1); }
-            public Vector3 Up() { return new Vector3(0, 0, 0); }
-            public Vector3 Down() { return new Vector3(0, 0, 0); }
-            public Vector3 Left() { return new Vector3(0, 0, 0); }
-            public Vector3 Right() { return new Vector3(0, 0, 0); }
-            public Vector3 Forward() { return new Vector3(0, 0, 0); }
-            public Vector3 Back() { return new Vector3(0, 0, 0); }
+            }
+            public static Vector3 Zero() { return new Vector3(0, 0, 0); }
+            public static Vector3 One() { return new Vector3(1, 1, 1); }
+            public static Vector3 Up() { return new Vector3(0, 0, 0); }
+            public static Vector3 Down() { return new Vector3(0, 0, 0); }
+            public static Vector3 Left() { return new Vector3(0, 0, 0); }
+            public static Vector3 Right() { return new Vector3(0, 0, 0); }
+            public static Vector3 Forward() { return new Vector3(0, 0, 0); }
+            public static Vector3 Back() { return new Vector3(0, 0, 0); }
+
+            //public static Vector3 Max(Vector3 _a, Vector3 _b);
+            //public static Vector3 Min(Vector3 _a, Vector3 _b);
+            //public static Vector3 Normalize(Vector3 value);
+
+            public static Vector3 operator +(Vector3 _a, Vector3 _b) { return new Vector3(_a.x + _b.x, _a.y + _b.y, _a.z + _b.z); }
+            public static Vector3 operator -(Vector3 _a) { return new Vector3(-_a.x, -_a.y, -_a.z); }
+            public static Vector3 operator -(Vector3 _a, Vector3 _b) { return new Vector3(_a.x - _b.x, _a.y - _b.y, _a.z - _b.z); }
+            public static Vector3 operator *(Vector3 _a, float _b) { return new Vector3(_a.x * _b, _a.y * _b, _a.z * _b); }
+            public static Vector3 operator /(Vector3 _a, float _b) { return new Vector3(_a.x / _b, _a.y / _b, _a.z / _b); }
+            public static bool operator ==(Vector3 _a, Vector3 _b) { return _a == _b; }
+            public static bool operator !=(Vector3 _a, Vector3 _b) { return _a != _b; }
         }
 
         public class Vector4 {
@@ -101,15 +108,175 @@ namespace APIHelperVioletRoot {
         }
     }
 
+    public static class Multithreaded { }
+    public static class Coroutine { }
+
+    /// <summary>
+    /// Class for mathetical
+    /// https://github.com/Unity-Technologies/UnityCsReference/blob/master/Runtime/Export/Math/Mathf.cs
+    /// https://docs.rs/bevy/latest/bevy/math/index.html
+    /// </summary>
+    public static class MathTool {
+        /// <summary>
+        /// Returns the sine of angle /f/ in radians.
+        /// </summary>        
+        public static float Sin(float f) { return (float)Math.Sin(f); }
+
+        // Returns the cosine of angle /f/ in radians.
+        public static float Cos(float f) { return (float)Math.Cos(f); }
+
+        // Returns the tangent of angle /f/ in radians.
+        public static float Tan(float f) { return (float)Math.Tan(f); }
+
+        // Returns the arc-sine of /f/ - the angle in radians whose sine is /f/.
+        public static float Asin(float f) { return (float)Math.Asin(f); }
+
+        // Returns the arc-cosine of /f/ - the angle in radians whose cosine is /f/.
+        public static float Acos(float f) { return (float)Math.Acos(f); }
+
+        // Returns the arc-tangent of /f/ - the angle in radians whose tangent is /f/.
+        public static float Atan(float f) { return (float)Math.Atan(f); }
+
+        // Returns the angle in radians whose ::ref::Tan is y/x.
+        public static float Atan2(float y, float x) { return (float)Math.Atan2(y, x); }
+
+        // Returns square root of /f/.
+        public static float Sqrt(float f) { return (float)Math.Sqrt(f); }
+
+        // Returns the absolute value of /f/.
+        public static float Abs(float f) { return Math.Abs(f); }
+
+        // Returns the absolute value of /value/.
+        public static int Abs(int value) { return Math.Abs(value); }
+
+        /// *listonly*
+        public static float Min(float a, float b) { return a < b ? a : b; }
+        // Returns the smallest of two or more values.
+        public static float Min(params float[] values) {
+            int len = values.Length;
+            if (len == 0)
+                return 0;
+            float m = values[0];
+            for (int i = 1; i < len; i++) {
+                if (values[i] < m)
+                    m = values[i];
+            }
+            return m;
+        }
+
+        /// *listonly*
+        public static int Min(int a, int b) { return a < b ? a : b; }
+        // Returns the smallest of two or more values.
+        public static int Min(params int[] values) {
+            int len = values.Length;
+            if (len == 0)
+                return 0;
+            int m = values[0];
+            for (int i = 1; i < len; i++) {
+                if (values[i] < m)
+                    m = values[i];
+            }
+            return m;
+        }
+
+        /// *listonly*
+        public static float Max(float a, float b) { return a > b ? a : b; }
+        // Returns largest of two or more values.
+        public static float Max(params float[] values) {
+            int len = values.Length;
+            if (len == 0)
+                return 0;
+            float m = values[0];
+            for (int i = 1; i < len; i++) {
+                if (values[i] > m)
+                    m = values[i];
+            }
+            return m;
+        }
+
+        /// *listonly*
+        public static int Max(int a, int b) { return a > b ? a : b; }
+        // Returns the largest of two or more values.
+        public static int Max(params int[] values) {
+            int len = values.Length;
+            if (len == 0)
+                return 0;
+            int m = values[0];
+            for (int i = 1; i < len; i++) {
+                if (values[i] > m)
+                    m = values[i];
+            }
+            return m;
+        }
+
+        // Returns /f/ raised to power /p/.
+        public static float Pow(float f, float p) { return (float)Math.Pow(f, p); }
+
+        // Returns e raised to the specified power.
+        public static float Exp(float power) { return (float)Math.Exp(power); }
+
+        // Returns the logarithm of a specified number in a specified base.
+        public static float Log(float f, float p) { return (float)Math.Log(f, p); }
+
+        // Returns the natural (base e) logarithm of a specified number.
+        public static float Log(float f) { return (float)Math.Log(f); }
+
+        // Returns the base 10 logarithm of a specified number.
+        public static float Log10(float f) { return (float)Math.Log10(f); }
+
+        // Returns the smallest integer greater to or equal to /f/.
+        public static float Ceil(float f) { return (float)Math.Ceiling(f); }
+
+        // Returns the largest integer smaller to or equal to /f/.
+        public static float Floor(float f) { return (float)Math.Floor(f); }
+
+        // Returns /f/ rounded to the nearest integer.
+        public static float Round(float f) { return (float)Math.Round(f); }
+
+        // Returns the smallest integer greater to or equal to /f/.
+        public static int CeilToInt(float f) { return (int)Math.Ceiling(f); }
+
+        // Returns the largest integer smaller to or equal to /f/.
+        public static int FloorToInt(float f) { return (int)Math.Floor(f); }
+
+        // Returns /f/ rounded to the nearest integer.
+        public static int RoundToInt(float f) { return (int)Math.Round(f); }
+        
+        /// <summary>
+        /// Clamps value between min and max and returns value. 
+        /// </summary>                
+        public static int Clamp(int value, int min, int max) {
+            if (value < min)
+                value = min;
+            else if (value > max)
+                value = max;
+            return value;
+        }
+        
+        /// <summary>
+        /// Clamps value between 0 and 1 and returns value 
+        /// </summary>        
+        public static float Clamp01(float value) {
+            if (value < 0F)
+                return 0F;
+            else if (value > 1F)
+                return 1F;
+            else
+                return value;
+        }
+    }
+    
+    public static class ToolTweenLerp { }
+
     /// <summary>
     /// Class for logging message to Unity Console
     /// </summary>
-    public static class LogSystem {
+    public static class ToolLog {
         /// <summary>
         /// "Log Level" type.
         /// ("least important" to "most important" order)
         /// </summary>
-        public enum ENUM_LOGSYSTEM_LEVEL_TYPE {
+        public enum ENUM_LOG_LEVEL_TYPE {
             TRACE, //very noisy, have to trace back to origin
             DEBUG, //helpful for debugging            
             INFO, //helpful information that is worth printing by default
@@ -123,14 +290,14 @@ namespace APIHelperVioletRoot {
         /// DO NOT USE, STILL IN DEVELOPMENT.
         /// This function is designed as output message based on LOG LEVEL type.
         /// </summary>        
-        public static void Log(ENUM_LOGSYSTEM_LEVEL_TYPE _type, object _message, UnityEngine.Object _origin) {
+        public static void Log(ENUM_LOG_LEVEL_TYPE _type, object _message, UnityEngine.Object _origin) {
             switch (_type) {
-                case ENUM_LOGSYSTEM_LEVEL_TYPE.TRACE: break;
-                case ENUM_LOGSYSTEM_LEVEL_TYPE.DEBUG: break;
-                case ENUM_LOGSYSTEM_LEVEL_TYPE.INFO: break;
-                case ENUM_LOGSYSTEM_LEVEL_TYPE.WARN: break;
-                case ENUM_LOGSYSTEM_LEVEL_TYPE.ERROR: break;
-                case ENUM_LOGSYSTEM_LEVEL_TYPE.FATAL: break;
+                case ENUM_LOG_LEVEL_TYPE.TRACE: break;
+                case ENUM_LOG_LEVEL_TYPE.DEBUG: break;
+                case ENUM_LOG_LEVEL_TYPE.INFO: break;
+                case ENUM_LOG_LEVEL_TYPE.WARN: break;
+                case ENUM_LOG_LEVEL_TYPE.ERROR: break;
+                case ENUM_LOG_LEVEL_TYPE.FATAL: break;
                 default: break;
             }
         }
