@@ -19,126 +19,97 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum ENUM_COLLISION_RESPOND_TYPE {
-    K_PLAYER,
-    K_THREAT
-}
-
-[RequireComponent(typeof(ComponentTag), typeof(Rigidbody))]
+[RequireComponent(typeof(Rigidbody))]
 public class ComponentCollisionRespond : MonoBehaviour {
-    //TODO Remove Component TAG
-    private ComponentTag m_componentTag;
-    [SerializeField] private ENUM_COLLISION_RESPOND_TYPE enum_collisionRespond;
-    private void Start() { 
-        m_componentTag = this.GetComponent<ComponentTag>();
-        IsHandleErrorCollisionObject(this.gameObject);
+    public enum ENUM_COLLISION_RESPOND_TYPE {
+        K_PLAYER,
+        K_THREAT
     }
 
-    //TODO Remove
-    private bool IsHandleError(GameObject _gameObject) {
-        bool status = false;
-        if (_gameObject.GetComponent<ComponentCollisionRespond>() == null) {
-            Debug.LogError("ERROR Object has no Component Collision Respond, safe exit");            
-            status = true;
+    [SerializeField] private ENUM_COLLISION_RESPOND_TYPE enum_collisionRespond;
+
+    private void Start() => IsHandleErrorStartSetup();
+
+    //--EXTERNAL-FUNCTIONS
+    public ENUM_COLLISION_RESPOND_TYPE GetCollisionRespondType() { return enum_collisionRespond; }
+    public bool IsCollisionRespondType(ENUM_COLLISION_RESPOND_TYPE _type) { return enum_collisionRespond == _type; }    
+
+    //--UNITY COLLISION TYPES--
+    //DO NOT EDIT UNLESS NECCESSARY
+
+    private void OnCollisionEnter2D(Collision2D collision) => OnCollisionRespondEnter(collision.gameObject, collision.gameObject.GetComponent<ComponentTagLayer>().GetTagType());
+    private void OnCollisionStay2D(Collision2D collision) => OnCollisionRespondStay(collision.gameObject, collision.gameObject.GetComponent<ComponentTagLayer>().GetTagType());
+    private void OnCollisionExit2D(Collision2D collision) => OnCollisionRespondExit(collision.gameObject, collision.gameObject.GetComponent<ComponentTagLayer>().GetTagType());
+
+    private void OnTriggerEnter2D(Collider2D collision) => OnCollisionRespondEnter(collision.gameObject, collision.gameObject.GetComponent<ComponentTagLayer>().GetTagType());
+    private void OnTriggerStay2D(Collider2D collision) => OnCollisionRespondStay(collision.gameObject, collision.gameObject.GetComponent<ComponentTagLayer>().GetTagType());
+    private void OnTriggerExit2D(Collider2D collision) => OnCollisionRespondExit(collision.gameObject, collision.gameObject.GetComponent<ComponentTagLayer>().GetTagType());
+
+    private void OnCollisionEnter(Collision collision) => OnCollisionRespondEnter(collision.gameObject, collision.gameObject.GetComponent<ComponentTagLayer>().GetTagType());
+    private void OnCollisionStay(Collision collision) => OnCollisionRespondStay(collision.gameObject, collision.gameObject.GetComponent<ComponentTagLayer>().GetTagType());
+    private void OnCollisionExit(Collision collision) => OnCollisionRespondExit(collision.gameObject, collision.gameObject.GetComponent<ComponentTagLayer>().GetTagType());
+
+    private void OnTriggerEnter(Collider other) => OnCollisionRespondEnter(other.gameObject, other.GetComponent<ComponentTagLayer>().GetTagType());
+    private void OnTriggerStay(Collider other) => OnCollisionRespondStay(other.gameObject, other.GetComponent<ComponentTagLayer>().GetTagType());
+    private void OnTriggerExit(Collider other) => OnCollisionRespondExit(other.gameObject, other.GetComponent<ComponentTagLayer>().GetTagType());
+
+    //--CUSTOM COLLISION RESPOND--
+    //ALLOW EDIT
+
+    private void OnCollisionRespondEnter(GameObject _gameObject, ENUM_TAG_TYPE _compareTag) {
+        if (IsHandleErrorCollisionObject(_gameObject)) return; //safe-check
+        switch (this.GetCollisionRespondType()) {
+            case ENUM_COLLISION_RESPOND_TYPE.K_PLAYER: break;
+            case ENUM_COLLISION_RESPOND_TYPE.K_THREAT: break;
+            default: break;
         }
-        if (_gameObject.GetComponent<Rigidbody>() == null) {
-            Debug.LogError("WARN Collision Respond with objects has no RIGIDBODY, safe exit");
-            status = true;
+    }
+
+    private void OnCollisionRespondStay(GameObject _gameObject, ENUM_TAG_TYPE _compareTag) {
+        if (IsHandleErrorCollisionObject(_gameObject)) return; //safe-check
+        switch (this.GetCollisionRespondType()) {
+            case ENUM_COLLISION_RESPOND_TYPE.K_PLAYER: break;
+            case ENUM_COLLISION_RESPOND_TYPE.K_THREAT: break;
+            default: break;
         }
-        if (status) return true; //return-error
+    }
+
+    private void OnCollisionRespondExit(GameObject _gameObject, ENUM_TAG_TYPE _compareTag) {
+        if (IsHandleErrorCollisionObject(_gameObject)) return; //safe-check
+        switch (this.GetCollisionRespondType()) {
+            case ENUM_COLLISION_RESPOND_TYPE.K_PLAYER: break;
+            case ENUM_COLLISION_RESPOND_TYPE.K_THREAT: break;
+            default: break;
+        }
+    }
+
+    //--HANDLING-ERROR-NULL-REFERENCE--
+    //Checking error
+    private bool IsHandleErrorStartSetup() {
+        IsHandleErrorCollisionObject(this.gameObject); //return-error-if-encounter
         return false; //return-no-errors
     }
 
-    //TODO Rename    
+    //PLEASE-USE-THIS-MAINLY
     private bool IsHandleErrorCollisionObject(GameObject _gameObject) {
         if (IsHandleErrorNoComponentCollisionRespond(_gameObject)) return true; //return-error
         if (IsHandleErrorNoRigidbody(_gameObject)) return true; //return-error
         return false; //return-no-errors
     }
 
-    private bool IsHandleErrorNoComponentCollisionRespond(GameObject _gameObject) {        
+    private bool IsHandleErrorNoComponentCollisionRespond(GameObject _gameObject) {
         if (_gameObject.GetComponent<ComponentCollisionRespond>() == null) {
             Debug.LogError("ERROR No ComponentCollisionRespond, safe exit");
             return true; //return-error
-        }                
+        }
         return false; //return-no-errors
     }
 
-    private bool IsHandleErrorNoRigidbody(GameObject _gameObject) {        
+    private bool IsHandleErrorNoRigidbody(GameObject _gameObject) {
         if (_gameObject.GetComponent<Rigidbody>() == null) {
             Debug.LogError("ERROR No RIGIDBODY, safe exit");
             return true; //return-error
-        }        
+        }
         return false; //return-no-errors
-    }
-
-    public ENUM_COLLISION_RESPOND_TYPE GetCollisionRespondType() { return enum_collisionRespond; }
-    public bool IsCollisionRespondType(ENUM_COLLISION_RESPOND_TYPE _type) { return enum_collisionRespond == _type; }
-
-    //--UNITY COLLISION TYPES--
-    //DO NOT EDIT UNLESS NECCESSARY
-
-    private void OnCollisionEnter2D(Collision2D collision) => OnCollisionRespondEnter(collision.gameObject, collision.gameObject.GetComponent<ComponentTag>().GetTagType());
-    private void OnCollisionStay2D(Collision2D collision) => OnCollisionRespondStay(collision.gameObject, collision.gameObject.GetComponent<ComponentTag>().GetTagType());
-    private void OnCollisionExit2D(Collision2D collision) => OnCollisionRespondExit(collision.gameObject, collision.gameObject.GetComponent<ComponentTag>().GetTagType());
-
-    private void OnTriggerEnter2D(Collider2D collision) => OnCollisionRespondEnter(collision.gameObject, collision.gameObject.GetComponent<ComponentTag>().GetTagType());
-    private void OnTriggerStay2D(Collider2D collision) => OnCollisionRespondStay(collision.gameObject, collision.gameObject.GetComponent<ComponentTag>().GetTagType());
-    private void OnTriggerExit2D(Collider2D collision) => OnCollisionRespondExit(collision.gameObject, collision.gameObject.GetComponent<ComponentTag>().GetTagType());
-
-    private void OnCollisionEnter(Collision collision) => OnCollisionRespondEnter(collision.gameObject, collision.gameObject.GetComponent<ComponentTag>().GetTagType());
-    private void OnCollisionStay(Collision collision) => OnCollisionRespondStay(collision.gameObject, collision.gameObject.GetComponent<ComponentTag>().GetTagType());
-    private void OnCollisionExit(Collision collision) => OnCollisionRespondExit(collision.gameObject, collision.gameObject.GetComponent<ComponentTag>().GetTagType());
-
-    private void OnTriggerEnter(Collider other) => OnCollisionRespondEnter(other.gameObject, other.GetComponent<ComponentTag>().GetTagType());
-    private void OnTriggerStay(Collider other) => OnCollisionRespondStay(other.gameObject, other.GetComponent<ComponentTag>().GetTagType());
-    private void OnTriggerExit(Collider other) => OnCollisionRespondExit(other.gameObject, other.GetComponent<ComponentTag>().GetTagType());
-
-    //--CUSTOM COLLISION RESPOND--
-    //ALLOW EDIT
-
-    private void OnCollisionRespondEnter(GameObject _gameObject, ENUM_TAG_TYPE _compareTag) {
-        if (IsHandleError(_gameObject)) return; //safe-check
-        switch (m_componentTag.GetTagType()) {
-            case ENUM_TAG_TYPE.K_PLAYER:
-                switch (_compareTag) {
-                    case ENUM_TAG_TYPE.K_PLAYER: break;
-                    case ENUM_TAG_TYPE.K_THREAT: break;
-                    default: break;
-                }
-                break;
-            case ENUM_TAG_TYPE.K_THREAT: break;
-            default: return; //safe-check                
-        }
-    }
-
-    private void OnCollisionRespondStay(GameObject _gameObject, ENUM_TAG_TYPE _compareTag) {
-        if (IsHandleError(_gameObject)) return; //safe-check
-        switch (m_componentTag.GetTagType()) {
-            case ENUM_TAG_TYPE.K_PLAYER:
-                switch (_compareTag) {
-                    case ENUM_TAG_TYPE.K_PLAYER: break;
-                    case ENUM_TAG_TYPE.K_THREAT: break;
-                    default: break;
-                }
-                break;
-            case ENUM_TAG_TYPE.K_THREAT: break;
-            default: return; //safe-check                
-        }
-    }
-
-    private void OnCollisionRespondExit(GameObject _gameObject, ENUM_TAG_TYPE _compareTag) {
-        if (IsHandleError(_gameObject)) return; //safe-check
-        switch (m_componentTag.GetTagType()) {
-            case ENUM_TAG_TYPE.K_PLAYER:
-                switch (_compareTag) {
-                    case ENUM_TAG_TYPE.K_PLAYER: break;
-                    case ENUM_TAG_TYPE.K_THREAT: break;
-                    default: break;
-                }
-                break;
-            case ENUM_TAG_TYPE.K_THREAT: break;
-            default: return; //safe-check                
-        }
     }
 }

@@ -10,6 +10,7 @@ Multiple types of IsHandleError()
 
 It should be more modular as there are many use cases
 
+private bool IsHandleErrorAwake();
 private bool IsHandleErrorStart();
 
 private bool IsHandleError(GameObject _gameObject) {
