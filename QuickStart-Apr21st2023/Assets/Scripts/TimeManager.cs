@@ -36,16 +36,12 @@ public class TimeManager : MonoBehaviour {
     float f_timeElapse;
     float f_timeLimit;
 
-    bool isTimeElapseStop = false;
-    bool isTimeLimitStop = false;
+    bool isAllowTimeElapse = false;
+    bool isAllowTimeLimit = false;
 
-    private void Start() {
-        
-    }
+    private void Start() { }
 
-    private void Update() {
-        
-    }
+    private void Update() { }
 
     public void ResetSpecificValueDefault(ENUM_TIME_TYPE _type) {
         switch (_type) {
@@ -57,7 +53,8 @@ public class TimeManager : MonoBehaviour {
         }
     }
 
-    public void SetStatusAllowTimeElapse(bool _status) => isTimeElapseStop = _status;
+    public void SetStatusAllowTimeElapse(bool _status) => isAllowTimeElapse = _status;
+    public void SetStatusAllowTimeLimit(bool _status) => isAllowTimeLimit = _status;    
 
     public void SetTimeLimit(float _value) { }
     public void IncreaseTimeElapse() { 
