@@ -42,24 +42,13 @@ public class AICore : MonoBehaviour
 
     private void Start() {
         CalculateGameAreaBasedOnCurrentPosition();
-        OnEnemyBehavior(enum_aiBehaviorType);
+        OnAIBehaviorStart(enum_aiBehaviorType);
     }
 
     private void Update() { }
 
-    public void SetAIBehaviorType(ENUM_AIBEHAVIOR_STATE_TYPE _type) => enum_aiBehaviorType = _type;
+    public void SetAIBehaviorType(ENUM_AIBEHAVIOR_STATE_TYPE _type) => enum_aiBehaviorType = _type;    
 
-    public void OnEnemyBehavior(ENUM_AIBEHAVIOR_STATE_TYPE _type) {
-        switch (_type) {
-            case ENUM_AIBEHAVIOR_STATE_TYPE.K_IDLE_WAIT:
-                WaitIdle();
-                break;
-            case ENUM_AIBEHAVIOR_STATE_TYPE.K_MOVE_RANDOM_IN_AREA:
-                Move(GetRandomLocationWithinBounds(), Random.Range(1.0f, 4.0f));
-                break;
-            default: break;
-        }
-    }
 
     public void CalculateGameAreaBasedOnCurrentPosition() {
         if (isCalculateOnce) return;
@@ -92,7 +81,7 @@ public class AICore : MonoBehaviour
     public void StartRandomBehavior() {
         int count = System.Enum.GetNames(typeof(ENUM_AIBEHAVIOR_STATE_TYPE)).Length;
         enum_aiBehaviorType = (ENUM_AIBEHAVIOR_STATE_TYPE)Random.Range(0, count);
-        OnEnemyBehavior(enum_aiBehaviorType);
+        OnAIBehaviorStart(enum_aiBehaviorType);
     }
 
     public void WaitIdle() => StartCoroutine(RoutineWait(Random.Range(1.0f, 5.0f)));
@@ -101,7 +90,7 @@ public class AICore : MonoBehaviour
     private IEnumerator RoutineWait(float _time) {
         f_waitTime = _time;
         yield return new WaitForSeconds(_time);
-        OnEnemyBehavior(ENUM_AIBEHAVIOR_STATE_TYPE.K_MOVE_RANDOM_IN_AREA);
+        OnAIBehaviorStart(ENUM_AIBEHAVIOR_STATE_TYPE.K_MOVE_RANDOM_IN_AREA);
     }
 
     private IEnumerator RoutineMove(UnityEngine.Vector3 _destination, float _time) {
@@ -121,7 +110,7 @@ public class AICore : MonoBehaviour
                 isReachDest = true; //confirm
                 this.transform.position = _destination; //set the position of this object equals to the destination                    
 
-                OnEnemyBehavior(ENUM_AIBEHAVIOR_STATE_TYPE.K_IDLE_WAIT);
+                OnAIBehaviorStart(ENUM_AIBEHAVIOR_STATE_TYPE.K_IDLE_WAIT);
 
                 break; //break-out-of-the-loop                
             }
@@ -131,6 +120,36 @@ public class AICore : MonoBehaviour
             float t = elapsedTime / _time;
             this.transform.position = UnityEngine.Vector3.Lerp(startPosition, _destination, t);
             yield return null; //Back to the start of while loop
+        }
+    }
+
+    //--BEHAVIOR-TYPE--
+    //Add all your logic behavior here
+    public void OnAIBehaviorStart(ENUM_AIBEHAVIOR_STATE_TYPE _type) {
+        switch (_type) {
+            case ENUM_AIBEHAVIOR_STATE_TYPE.K_IDLE_WAIT:
+                WaitIdle();
+                break;
+            case ENUM_AIBEHAVIOR_STATE_TYPE.K_MOVE_RANDOM_IN_AREA:
+                Move(GetRandomLocationWithinBounds(), Random.Range(1.0f, 4.0f));
+                break;
+            default: break;
+        }
+    }
+
+    public void OnAIBehaviorUpdate(ENUM_AIBEHAVIOR_STATE_TYPE _type) {
+        switch (_type) {
+            case ENUM_AIBEHAVIOR_STATE_TYPE.K_IDLE_WAIT: break;
+            case ENUM_AIBEHAVIOR_STATE_TYPE.K_MOVE_RANDOM_IN_AREA: break;
+            default: break;
+        }
+    }
+
+    public void OnAIBehaviorEnd(ENUM_AIBEHAVIOR_STATE_TYPE _type) {
+        switch (_type) {
+            case ENUM_AIBEHAVIOR_STATE_TYPE.K_IDLE_WAIT: break;
+            case ENUM_AIBEHAVIOR_STATE_TYPE.K_MOVE_RANDOM_IN_AREA: break;
+            default: break;
         }
     }
 
