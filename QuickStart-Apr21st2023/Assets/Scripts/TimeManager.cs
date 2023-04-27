@@ -18,6 +18,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+//TODO: Add time stop, slow time or something feature
+
 public class TimeManager : MonoBehaviour {
     class TimeConstants {
         public static readonly float[] K_TIME_ELAPSE = { 0, 100, 0 };
