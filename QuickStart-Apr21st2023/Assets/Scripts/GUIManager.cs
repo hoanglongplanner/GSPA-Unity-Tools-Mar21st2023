@@ -75,7 +75,7 @@ public enum ENUM_GUIELEMENT_SLIDER_TYPE {
     LEVEL_PROGRESSION
 }
 
-public class GUIManager : MonoBehaviour {
+public class GUIManager : SingletonBlankMonoBehavior<GUIManager> {
 
     public GameObject[] sz_m_page;
 

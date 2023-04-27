@@ -14,15 +14,24 @@ public class ToolSaveLoadPlayerPref {
     static private int idx;
     static private byte[] byteBlock;
 
-    enum ArrayType { Float, Int32, Bool, String, Vector2, Vector3, Quaternion, Color }
+    enum ENUM_SAVELOAD_ARRAY_TYPE { 
+        Float, 
+        Int32, 
+        Bool, 
+        String, 
+        Vector2, 
+        Vector3, 
+        Quaternion, 
+        Color 
+    }
 
-    public static void SetInt(string name, int value) { PlayerPrefs.SetInt(name, value); }
+    public static void SetInt(string name, int value) => PlayerPrefs.SetInt(name, value);
     public static int GetInt(string name, int value) { return PlayerPrefs.GetInt(name); }
 
-    public static void SetFloat(string name, float value) { PlayerPrefs.SetFloat(name, value); }
+    public static void SetFloat(string name, float value) => PlayerPrefs.SetFloat(name, value);
     public static float GetFloat(string name) { return PlayerPrefs.GetFloat(name); }
 
-    public static void SetString(string name, string value) { PlayerPrefs.SetString(name, value); }
+    public static void SetString(string name, string value) => PlayerPrefs.SetString(name, value);
     public static string GetString(string name) { return PlayerPrefs.GetString(name); }
 
     public static bool SetBool(String name, bool value) {
@@ -35,13 +44,8 @@ public class ToolSaveLoadPlayerPref {
         return true;
     }
 
-    public static bool GetBool(String name) {
-        return PlayerPrefs.GetInt(name) == 1;
-    }
-
-    public static bool GetBool(String name, bool defaultValue) {
-        return (1 == PlayerPrefs.GetInt(name, defaultValue ? 1 : 0));
-    }
+    public static bool GetBool(String name) { return PlayerPrefs.GetInt(name) == 1; }
+    public static bool GetBool(String name, bool defaultValue) { return (1 == PlayerPrefs.GetInt(name, defaultValue ? 1 : 0)); }
 
     public static long GetLong(string key, long defaultValue) {
         int lowBits, highBits;
@@ -158,7 +162,7 @@ public class ToolSaveLoadPlayerPref {
         // Make a byte array that's a multiple of 8 in length, plus 5 bytes to store the number of entries as an int32 (+ identifier)
         // We have to store the number of entries, since the boolArray length might not be a multiple of 8, so there could be some padded zeroes
         var bytes = new byte[(boolArray.Length + 7) / 8 + 5];
-        bytes[0] = System.Convert.ToByte(ArrayType.Bool);   // Identifier
+        bytes[0] = System.Convert.ToByte(ENUM_SAVELOAD_ARRAY_TYPE.Bool);   // Identifier
         var bits = new BitArray(boolArray);
         bits.CopyTo(bytes, 5);
         Initialize();
@@ -174,7 +178,7 @@ public class ToolSaveLoadPlayerPref {
                 Debug.LogError("Corrupt preference file for " + key);
                 return new bool[0];
             }
-            if ((ArrayType)bytes[0] != ArrayType.Bool) {
+            if ((ENUM_SAVELOAD_ARRAY_TYPE)bytes[0] != ENUM_SAVELOAD_ARRAY_TYPE.Bool) {
                 Debug.LogError(key + " is not a boolean array");
                 return new bool[0];
             }
@@ -207,7 +211,7 @@ public class ToolSaveLoadPlayerPref {
 
     public static bool SetStringArray(String key, String[] stringArray) {
         var bytes = new byte[stringArray.Length + 1];
-        bytes[0] = System.Convert.ToByte(ArrayType.String); // Identifier
+        bytes[0] = System.Convert.ToByte(ENUM_SAVELOAD_ARRAY_TYPE.String); // Identifier
         Initialize();
 
         // Store the length of each string that's in stringArray, so we can extract the correct strings in GetStringArray
@@ -241,7 +245,7 @@ public class ToolSaveLoadPlayerPref {
                 return new String[0];
             }
             var bytes = System.Convert.FromBase64String(completeString.Substring(0, separatorIndex));
-            if ((ArrayType)bytes[0] != ArrayType.String) {
+            if ((ENUM_SAVELOAD_ARRAY_TYPE)bytes[0] != ENUM_SAVELOAD_ARRAY_TYPE.String) {
                 Debug.LogError(key + " is not a string array");
                 return new String[0];
             }
@@ -277,30 +281,30 @@ public class ToolSaveLoadPlayerPref {
     }
 
     public static bool SetIntArray(String key, int[] intArray) {
-        return SetValue(key, intArray, ArrayType.Int32, 1, ConvertFromInt);
+        return SetValue(key, intArray, ENUM_SAVELOAD_ARRAY_TYPE.Int32, 1, ConvertFromInt);
     }
 
     public static bool SetFloatArray(String key, float[] floatArray) {
-        return SetValue(key, floatArray, ArrayType.Float, 1, ConvertFromFloat);
+        return SetValue(key, floatArray, ENUM_SAVELOAD_ARRAY_TYPE.Float, 1, ConvertFromFloat);
     }
 
     public static bool SetVector2Array(String key, Vector2[] vector2Array) {
-        return SetValue(key, vector2Array, ArrayType.Vector2, 2, ConvertFromVector2);
+        return SetValue(key, vector2Array, ENUM_SAVELOAD_ARRAY_TYPE.Vector2, 2, ConvertFromVector2);
     }
 
     public static bool SetVector3Array(String key, Vector3[] vector3Array) {
-        return SetValue(key, vector3Array, ArrayType.Vector3, 3, ConvertFromVector3);
+        return SetValue(key, vector3Array, ENUM_SAVELOAD_ARRAY_TYPE.Vector3, 3, ConvertFromVector3);
     }
 
     public static bool SetQuaternionArray(String key, Quaternion[] quaternionArray) {
-        return SetValue(key, quaternionArray, ArrayType.Quaternion, 4, ConvertFromQuaternion);
+        return SetValue(key, quaternionArray, ENUM_SAVELOAD_ARRAY_TYPE.Quaternion, 4, ConvertFromQuaternion);
     }
 
     public static bool SetColorArray(String key, Color[] colorArray) {
-        return SetValue(key, colorArray, ArrayType.Color, 4, ConvertFromColor);
+        return SetValue(key, colorArray, ENUM_SAVELOAD_ARRAY_TYPE.Color, 4, ConvertFromColor);
     }
 
-    private static bool SetValue<T>(String key, T array, ArrayType arrayType, int vectorNumber, Action<T, byte[], int> convert) where T : IList {
+    private static bool SetValue<T>(String key, T array, ENUM_SAVELOAD_ARRAY_TYPE arrayType, int vectorNumber, Action<T, byte[], int> convert) where T : IList {
         var bytes = new byte[(4 * array.Count) * vectorNumber + 1];
         bytes[0] = System.Convert.ToByte(arrayType);    // Identifier
         Initialize();
@@ -346,7 +350,7 @@ public class ToolSaveLoadPlayerPref {
 
     public static int[] GetIntArray(String key) {
         var intList = new List<int>();
-        GetValue(key, intList, ArrayType.Int32, 1, ConvertToInt);
+        GetValue(key, intList, ENUM_SAVELOAD_ARRAY_TYPE.Int32, 1, ConvertToInt);
         return intList.ToArray();
     }
 
@@ -363,7 +367,7 @@ public class ToolSaveLoadPlayerPref {
 
     public static float[] GetFloatArray(String key) {
         var floatList = new List<float>();
-        GetValue(key, floatList, ArrayType.Float, 1, ConvertToFloat);
+        GetValue(key, floatList, ENUM_SAVELOAD_ARRAY_TYPE.Float, 1, ConvertToFloat);
         return floatList.ToArray();
     }
 
@@ -380,7 +384,7 @@ public class ToolSaveLoadPlayerPref {
 
     public static Vector2[] GetVector2Array(String key) {
         var vector2List = new List<Vector2>();
-        GetValue(key, vector2List, ArrayType.Vector2, 2, ConvertToVector2);
+        GetValue(key, vector2List, ENUM_SAVELOAD_ARRAY_TYPE.Vector2, 2, ConvertToVector2);
         return vector2List.ToArray();
     }
 
@@ -397,7 +401,7 @@ public class ToolSaveLoadPlayerPref {
 
     public static Vector3[] GetVector3Array(String key) {
         var vector3List = new List<Vector3>();
-        GetValue(key, vector3List, ArrayType.Vector3, 3, ConvertToVector3);
+        GetValue(key, vector3List, ENUM_SAVELOAD_ARRAY_TYPE.Vector3, 3, ConvertToVector3);
         return vector3List.ToArray();
     }
 
@@ -414,7 +418,7 @@ public class ToolSaveLoadPlayerPref {
 
     public static Quaternion[] GetQuaternionArray(String key) {
         var quaternionList = new List<Quaternion>();
-        GetValue(key, quaternionList, ArrayType.Quaternion, 4, ConvertToQuaternion);
+        GetValue(key, quaternionList, ENUM_SAVELOAD_ARRAY_TYPE.Quaternion, 4, ConvertToQuaternion);
         return quaternionList.ToArray();
     }
 
@@ -431,7 +435,7 @@ public class ToolSaveLoadPlayerPref {
 
     public static Color[] GetColorArray(String key) {
         var colorList = new List<Color>();
-        GetValue(key, colorList, ArrayType.Color, 4, ConvertToColor);
+        GetValue(key, colorList, ENUM_SAVELOAD_ARRAY_TYPE.Color, 4, ConvertToColor);
         return colorList.ToArray();
     }
 
@@ -446,14 +450,14 @@ public class ToolSaveLoadPlayerPref {
         return colorArray;
     }
 
-    private static void GetValue<T>(String key, T list, ArrayType arrayType, int vectorNumber, Action<T, byte[]> convert) where T : IList {
+    private static void GetValue<T>(String key, T list, ENUM_SAVELOAD_ARRAY_TYPE arrayType, int vectorNumber, Action<T, byte[]> convert) where T : IList {
         if (PlayerPrefs.HasKey(key)) {
             var bytes = System.Convert.FromBase64String(PlayerPrefs.GetString(key));
             if ((bytes.Length - 1) % (vectorNumber * 4) != 0) {
                 Debug.LogError("Corrupt preference file for " + key);
                 return;
             }
-            if ((ArrayType)bytes[0] != arrayType) {
+            if ((ENUM_SAVELOAD_ARRAY_TYPE)bytes[0] != arrayType) {
                 Debug.LogError(key + " is not a " + arrayType.ToString() + " array");
                 return;
             }
@@ -493,7 +497,7 @@ public class ToolSaveLoadPlayerPref {
     public static void ShowArrayType(String key) {
         var bytes = System.Convert.FromBase64String(PlayerPrefs.GetString(key));
         if (bytes.Length > 0) {
-            ArrayType arrayType = (ArrayType)bytes[0];
+            ENUM_SAVELOAD_ARRAY_TYPE arrayType = (ENUM_SAVELOAD_ARRAY_TYPE)bytes[0];
             Debug.Log(key + " is a " + arrayType.ToString() + " array");
         }
     }

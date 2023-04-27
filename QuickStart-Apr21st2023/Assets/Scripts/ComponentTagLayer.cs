@@ -26,5 +26,7 @@ public enum ENUM_TAG_TYPE {
 public class ComponentTagLayer : MonoBehaviour {
     [SerializeField] private ENUM_TAG_TYPE enum_tagType;
     public bool IsType(ENUM_TAG_TYPE _type) { return _type == enum_tagType; }
+    //TODO - Add logic to check for array tag type
+    public bool HasTagType(ENUM_TAG_TYPE _type) { return _type == enum_tagType; }
     public ENUM_TAG_TYPE GetTagType() { return enum_tagType; }
 }
