@@ -18,6 +18,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum ENUM_DIFFICULTY_TYPE {
+    K_EASY,
+    K_MEDIUM,
+    K_HARD
+}
+
 public enum ENUM_GAMESYSTEM_STATE {
     K_MAINMENU,
     K_GAMEPLAY_INIT,
