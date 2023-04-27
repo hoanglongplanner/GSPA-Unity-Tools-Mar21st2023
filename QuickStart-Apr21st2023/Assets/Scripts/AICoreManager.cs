@@ -19,14 +19,8 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class AICoreManager : MonoBehaviour
-{    
-    public enum ENUM_AICORE_CONDITION_TYPE {
-        IS_PLAYER_CLOSE,
-        IS_PLAYER_OUT_OF_RANGE,
-    }
-
-    [SerializeField] private float f_waitTime = 10.0f;
-    [SerializeField] private float f_playerDistance = 10.0f;
+{        
+    [SerializeField] private float f_waitTime = 10.0f;    
 
     [SerializeField] private float f_lenghtX = 5.0f;
     [SerializeField] private float f_lenghtZ = 5.0f;
@@ -34,16 +28,7 @@ public class AICoreManager : MonoBehaviour
     [SerializeField] private Vector3 vec3_areaMax;
     [SerializeField] private Vector3 vec3_center;
     [SerializeField] private bool isCalculateOnce = false;
-    [SerializeField] private Vector3 vec3_nextPosition;       
-
-
-    public bool GetStatusAICondition(ENUM_AICORE_CONDITION_TYPE _type) {
-        switch (_type) {
-            case ENUM_AICORE_CONDITION_TYPE.IS_PLAYER_CLOSE: return f_playerDistance <= 10.0f;
-            case ENUM_AICORE_CONDITION_TYPE.IS_PLAYER_OUT_OF_RANGE: return f_playerDistance >= 50.0f;
-            default: Debug.Log("Unknown AI Consition Detected !!"); return false;
-        }        
-    }
+    [SerializeField] private Vector3 vec3_nextPosition;           
 
     public void CalculateGameAreaBasedOnCurrentPosition() {
         if (isCalculateOnce) return;

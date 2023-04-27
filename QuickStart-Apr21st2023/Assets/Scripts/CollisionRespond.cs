@@ -20,7 +20,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody))]
-public class ComponentCollisionRespond : MonoBehaviour {
+public class CollisionRespond : MonoBehaviour {
     public enum ENUM_COLLISION_RESPOND_TYPE {
         K_PLAYER,
         K_THREAT
@@ -58,6 +58,7 @@ public class ComponentCollisionRespond : MonoBehaviour {
 
     private void OnCollisionRespondEnter(GameObject _gameObject, ENUM_TAG_TYPE _compareTag) {
         if (IsHandleErrorCollisionObject(_gameObject)) return; //safe-check
+
         switch (this.GetCollisionRespondType()) {
             case ENUM_COLLISION_RESPOND_TYPE.K_PLAYER: break;
             case ENUM_COLLISION_RESPOND_TYPE.K_THREAT: break;
@@ -67,6 +68,7 @@ public class ComponentCollisionRespond : MonoBehaviour {
 
     private void OnCollisionRespondStay(GameObject _gameObject, ENUM_TAG_TYPE _compareTag) {
         if (IsHandleErrorCollisionObject(_gameObject)) return; //safe-check
+
         switch (this.GetCollisionRespondType()) {
             case ENUM_COLLISION_RESPOND_TYPE.K_PLAYER: break;
             case ENUM_COLLISION_RESPOND_TYPE.K_THREAT: break;
@@ -76,6 +78,7 @@ public class ComponentCollisionRespond : MonoBehaviour {
 
     private void OnCollisionRespondExit(GameObject _gameObject, ENUM_TAG_TYPE _compareTag) {
         if (IsHandleErrorCollisionObject(_gameObject)) return; //safe-check
+
         switch (this.GetCollisionRespondType()) {
             case ENUM_COLLISION_RESPOND_TYPE.K_PLAYER: break;
             case ENUM_COLLISION_RESPOND_TYPE.K_THREAT: break;
@@ -98,7 +101,7 @@ public class ComponentCollisionRespond : MonoBehaviour {
     }
 
     private bool IsHandleErrorNoComponentCollisionRespond(GameObject _gameObject) {
-        if (_gameObject.GetComponent<ComponentCollisionRespond>() == null) {
+        if (_gameObject.GetComponent<CollisionRespond>() == null) {
             Debug.LogError("ERROR No ComponentCollisionRespond, safe exit");
             return true; //return-error
         }

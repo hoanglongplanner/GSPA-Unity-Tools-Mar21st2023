@@ -22,16 +22,18 @@ public class ConcurentValueGlobalManager : MonoBehaviour {
 
     private class ConcurentValueConstants {        
         
+        //EDIT FOR DIFFERENT USAGE
+
         //--MAIN-VALUE--
 
         static readonly float[] K_MONEY = { 0.0f, 100000.0f, 0.0f }; //min - 0.0f, max - 10000.0f, def - 0.0f
-        static readonly int[] K_HIGHSCORE = { 0, 10000, 0 }; //min - 0, max - 10000
+        static readonly int[] K_HIGHSCORE = { 0, 10000, 0 }; //min - 0, max - 10000, def - 0
         static readonly int[] K_COMBO = { 0, int.MaxValue, 0 }; //min - 0, max - int.Max
         static readonly float[] K_FEVER = { 0.0f, 100.0f, 50.0f }; //min - 0.0f, max - 100.0f, def - 50.0f
         static readonly int[] K_PIECE_LEFT = { 0, int.MaxValue, 0 }; //min - 0, max - int.Max, def - 0
 
         //--ADDITIONAL-RATE-VALUE--
-        public const float K_MONEY_RATE = 50.0f;
+        static readonly float[] K_MONEY_RATE = { 5.0f, 25.0f, 50.0f, 75.0f, 100.0f };
 
         //--GET-FUNCTIONS--
         public static float GetMoneyMin() { return K_MONEY[0]; }
@@ -106,6 +108,11 @@ public class ConcurentValueGlobalManager : MonoBehaviour {
         ResetSpecificValueDefault(ENUM_VALUE_TYPE.HIGHSCORE);
     }
 
+    public bool IsEnoughMoney(float _value) {        
+        if (GetValueMoney() < _value) return false;        
+        else return true;
+    }
+
     //--EXTERNAL-FUNCTION--
 
     public void IncreaseScore() {
@@ -128,12 +135,12 @@ public class ConcurentValueGlobalManager : MonoBehaviour {
         OnValueChange(ENUM_VALUE_TYPE.FEVER);
     }
 
-    public void IncreaseObstacleLeft() {
+    public void IncreaseCounterLeft() {
         i32_counterLeft += 1;
         OnValueChange(ENUM_VALUE_TYPE.COUNTER_LEFT);
     }
 
-    public void DecreaseObstacleLeft() {
+    public void DecreaseCounterLeft() {
         i32_counterLeft -= 1;
         OnValueChange(ENUM_VALUE_TYPE.COUNTER_LEFT);
     }
