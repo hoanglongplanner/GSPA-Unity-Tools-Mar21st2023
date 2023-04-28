@@ -20,22 +20,22 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 
 public class GUIElementButton : MonoBehaviour, IPointerClickHandler, IPointerEnterHandler, IPointerExitHandler {
-    [SerializeField] private ENUM_GUIELEMENT_BUTTON_TYPE enum_buttonType;
+    [SerializeField] private ENUM_GUIELEMENT_BUTTON_TYPE enum_type;
 
-    public bool IsType(ENUM_GUIELEMENT_BUTTON_TYPE _type) { return _type == enum_buttonType; }
+    public bool IsType(ENUM_GUIELEMENT_BUTTON_TYPE _type) { return _type == enum_type; }
 
     public void OnPointerClick(PointerEventData eventData) {
         if (GUISettings.K_ENABLE_POINTER_ON_MOUSE_DOWN == false) return; //Check-functionality
-        GUIManager.Instance.OnGUIElementButton(this, enum_buttonType, ENUM_GUIELEMENT_POINTER_STATUS.ON_MOUSE_DOWN);
+        GUIManager.Instance.OnGUIElementButton(this, enum_type, ENUM_GUIELEMENT_POINTER_STATUS.ON_MOUSE_DOWN);
     }        
 
     public void OnPointerEnter(PointerEventData eventData) {
         if (GUISettings.K_ENABLE_POINTER_ON_ENTER_HOVER == false) return; //Check-functionality        
-        GUIManager.Instance.OnGUIElementButton(this, enum_buttonType, ENUM_GUIELEMENT_POINTER_STATUS.ON_ENTER_HOVER);
+        GUIManager.Instance.OnGUIElementButton(this, enum_type, ENUM_GUIELEMENT_POINTER_STATUS.ON_ENTER_HOVER);
     }
 
     public void OnPointerExit(PointerEventData eventData) {
         if (GUISettings.K_ENABLE_POINTER_ON_EXIT == false) return; //Check-functionality        
-        GUIManager.Instance.OnGUIElementButton(this, enum_buttonType, ENUM_GUIELEMENT_POINTER_STATUS.ON_EXIT);
+        GUIManager.Instance.OnGUIElementButton(this, enum_type, ENUM_GUIELEMENT_POINTER_STATUS.ON_EXIT);
     }
 }

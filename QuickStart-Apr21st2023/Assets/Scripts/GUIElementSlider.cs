@@ -24,21 +24,21 @@ using UnityEngine.UI;
 using TMPro;
 
 public class GUIElementSlider : MonoBehaviour, IPointerClickHandler, IPointerEnterHandler, IPointerExitHandler {
-    [SerializeField] private ENUM_GUIELEMENT_SLIDER_TYPE enum_sliderType;
+    [SerializeField] private ENUM_GUIELEMENT_SLIDER_TYPE enum_type;
     private Slider m_slider;
     private bool isMouseHover = false;
 
     public void Setup() {
         m_slider = this.GetComponent<Slider>();        
 
-        m_slider.onValueChanged.AddListener(delegate { GUIManager.Instance.OnGUIElementSlider(this, enum_sliderType); });
+        m_slider.onValueChanged.AddListener(delegate { GUIManager.Instance.OnGUIElementSlider(this, enum_type); });
 
         StartCoroutine(RunDelayAction());
     }
 
     public IEnumerator RunDelayAction() {
         yield return new WaitForSeconds(0.5f);
-        GUIManager.Instance.OnGUIElementSlider(this, enum_sliderType);
+        GUIManager.Instance.OnGUIElementSlider(this, enum_type);
     }
 
     public void SetupSlider(float min, float max, float defaultValue, bool isWholeNumber = false) {
@@ -48,9 +48,9 @@ public class GUIElementSlider : MonoBehaviour, IPointerClickHandler, IPointerEnt
         m_slider.value = defaultValue;
     }
 
-    public bool IsType(ENUM_GUIELEMENT_SLIDER_TYPE _type) { return _type == enum_sliderType; }
+    public bool IsType(ENUM_GUIELEMENT_SLIDER_TYPE _type) { return _type == enum_type; }
 
-    public float Get_SliderValue() { return m_slider.value; }
+    public float GetValue() { return m_slider.value; }
 
     public void SetActive(bool status) {
         this.transform.gameObject.SetActive(status);

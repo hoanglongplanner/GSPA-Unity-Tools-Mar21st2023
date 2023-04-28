@@ -1,0 +1,97 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="GUISettings">
+    <Position X="3.75" Y="3.5" Width="3.5" />
+    <TypeIdentifier>
+      <HashCode>CAAAAAAAAQAAAAQAAAAAAAAAAAAAAAAEAAAAAAAAAAI=</HashCode>
+      <FileName>Assets\Scripts\GUIManager.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GUIManager">
+    <Position X="0.5" Y="3.5" Width="3" />
+    <TypeIdentifier>
+      <HashCode>BCQAAAIAACAAAICAIAAAACgAACAIAAgAgAAggAAgAEA=</HashCode>
+      <FileName>Assets\Scripts\GUIManager.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SingletonBlankMonoBehavior&lt;T&gt;">
+    <Position X="0.5" Y="0.5" Width="3" />
+    <TypeIdentifier>
+      <HashCode>AAABAAAAAAAAAAAAAAAAAAAAAABBAAAAQAAAAAAAAEA=</HashCode>
+      <FileName>Assets\Scripts\SingletonBlankMonoBehavior.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GUIElementText">
+    <Position X="13" Y="0.5" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAACCAAAQAAAIAAAAAAAAAAAAAAAAAIAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\GUIElementText.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GUIElementButton" BaseTypeListCollapsed="true">
+    <Position X="13" Y="4" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAgAAAQAAAAAAAAAAAAAgAAAAAAAIAQAAAAA=</HashCode>
+      <FileName>Assets\Scripts\GUIElementButton.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="GUIElementObject">
+    <Position X="15" Y="0.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAEAAAAAAAAQAAEAAAAAAAAAAAAAAAAAAIAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\GUIElementObject.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GUIElementSlider" BaseTypeListCollapsed="true">
+    <Position X="15" Y="4" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAIAKgAAAUAAAAAAAAAQAAQgAAAAAAAIAYAAAAA=</HashCode>
+      <FileName>Assets\Scripts\GUIElementSlider.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Enum Name="ENUM_GUIPAGE">
+    <Position X="11" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAQAAAAAAAAAAAAAAACAAAACgAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\GUIManager.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="ENUM_GUIELEMENT_POINTER_STATUS">
+    <Position X="7.5" Y="0.5" Width="3.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAACQAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\GUIManager.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="ENUM_GUIELEMENT_OBJECT_TYPE">
+    <Position X="7.5" Y="2" Width="3.25" />
+    <TypeIdentifier>
+      <HashCode>EAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\GUIManager.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="ENUM_GUIELEMENT_BUTTON_TYPE">
+    <Position X="7.5" Y="3.25" Width="3.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAgAAAAAAAAAAAAAIQAAAAAAAAAAAAAAAEAAAAA=</HashCode>
+      <FileName>Assets\Scripts\GUIManager.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="ENUM_GUIELEMENT_TEXT_TYPE">
+    <Position X="7.5" Y="6.5" Width="3.25" />
+    <TypeIdentifier>
+      <HashCode>CAAAAAAAQAAAAAAAAAAgAAAAAAAACAAgAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\GUIManager.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="ENUM_GUIELEMENT_SLIDER_TYPE">
+    <Position X="7.5" Y="5" Width="3.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAQAAAAABAAAAAAAAAAAAAAAAAAAAAAAAABAAAAA=</HashCode>
+      <FileName>Assets\Scripts\GUIManager.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

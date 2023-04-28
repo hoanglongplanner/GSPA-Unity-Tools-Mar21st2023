@@ -17,12 +17,12 @@ limitations under the License.
 using UnityEngine;
 
 public class GUIElementText : MonoBehaviour {
-    [SerializeField] private ENUM_GUIELEMENT_TEXT_TYPE type;
-    [SerializeField] private TMPro.TextMeshProUGUI tmpro_text;
+    [SerializeField] private ENUM_GUIELEMENT_TEXT_TYPE enum_type;
+    [SerializeField] private TMPro.TextMeshProUGUI m_tmpro;
 
-    private void Start() => tmpro_text = this.GetComponent<TMPro.TextMeshProUGUI>();    
-    public void Setup() => tmpro_text = this.GetComponent<TMPro.TextMeshProUGUI>();
+    private void Start() => m_tmpro = this.GetComponent<TMPro.TextMeshProUGUI>();    
+    public void Setup() => m_tmpro = this.GetComponent<TMPro.TextMeshProUGUI>();
 
-    public bool IsType(ENUM_GUIELEMENT_TEXT_TYPE _type) { return _type == type; }
-    public void SetText(string input) => tmpro_text.text = input;
+    public bool IsType(ENUM_GUIELEMENT_TEXT_TYPE _type) { return _type == enum_type; }
+    public void SetText(string input) => m_tmpro.text = input;
 }

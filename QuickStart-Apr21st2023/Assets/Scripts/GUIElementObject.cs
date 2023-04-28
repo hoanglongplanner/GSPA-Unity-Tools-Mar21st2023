@@ -15,7 +15,8 @@ limitations under the License.
 */
 
 public class GUIElementObject : UnityEngine.MonoBehaviour {
-    public ENUM_GUIELEMENT_OBJECT_TYPE type;
-    public bool IsType(ENUM_GUIELEMENT_OBJECT_TYPE _type) { return _type == type; }
+    public ENUM_GUIELEMENT_OBJECT_TYPE enum_type;
+    public bool IsType(ENUM_GUIELEMENT_OBJECT_TYPE _type) { return _type == enum_type; }
     public bool IsActive() { return isActiveAndEnabled; }
+    public void SetStatusObjectActive(bool _status) { this.gameObject.SetActive(_status); }
 }
