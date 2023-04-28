@@ -18,19 +18,19 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(Animator))]
-public class AnimationPlayer : MonoBehaviour {
+public enum ENUM_ANIMATION_STATE_TYPE {
+    K_IDLE,
+    K_WALK,
+    K_RUN,
+    K_ATTACK_MELEE,
+    K_ATTACK_RANGE,
+    K_JUMP_UP,
+    K_ON_AIR,
+    K_JUMP_DOWN
+}
 
-    public enum ENUM_ANIMATION_STATE_TYPE {
-        K_IDLE,
-        K_WALK,
-        K_RUN,
-        K_ATTACK_MELEE,
-        K_ATTACK_RANGE,
-        K_JUMP_UP,
-        K_ON_AIR,
-        K_JUMP_DOWN
-    }
+[RequireComponent(typeof(Animator))]
+public class AnimationPlayer : MonoBehaviour {    
 
     [SerializeField] private Animator m_animator;
     [SerializeField] private ENUM_ANIMATION_STATE_TYPE enum_currentAnim;
@@ -55,13 +55,13 @@ public class AnimationPlayer : MonoBehaviour {
 
     public void StopAnimation() => m_animator.StopPlayback();
 
-    private string GetAnimationName(ENUM_ANIMATION_STATE_TYPE type) {
+    public static string GetAnimationName(ENUM_ANIMATION_STATE_TYPE type) {
         switch (type) {
             case ENUM_ANIMATION_STATE_TYPE.K_IDLE: return "IDLE";
             case ENUM_ANIMATION_STATE_TYPE.K_RUN: return "RUN";
-            case ENUM_ANIMATION_STATE_TYPE.K_JUMP_UP: return "JUMPUP";
-            case ENUM_ANIMATION_STATE_TYPE.K_ON_AIR: return "ONAIR";
-            case ENUM_ANIMATION_STATE_TYPE.K_JUMP_DOWN: return "JUMPDOWN";
+            case ENUM_ANIMATION_STATE_TYPE.K_JUMP_UP: return "JUMP_UP";
+            case ENUM_ANIMATION_STATE_TYPE.K_ON_AIR: return "ON_AIR";
+            case ENUM_ANIMATION_STATE_TYPE.K_JUMP_DOWN: return "JUMP_DOWN";
             default: Debug.Log("NO ANIMATION NAME OF THAT TYPE !!"); return "NONE";
         }
     }    

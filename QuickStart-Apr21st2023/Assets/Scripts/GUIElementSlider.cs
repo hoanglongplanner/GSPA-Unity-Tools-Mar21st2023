@@ -60,7 +60,7 @@ public class GUIElementSlider : MonoBehaviour, IPointerClickHandler, IPointerEnt
 
     public void OnPointerEnter(PointerEventData eventData) {        
         isMouseHover = true;
-        GUIManager.Instance.GUIElementSliderManager(ENUM_GUIELEMENT_POINTER_STATUS.ON_ENTER);
+        GUIManager.Instance.GUIElementSliderManager(ENUM_GUIELEMENT_POINTER_STATUS.ON_ENTER_HOVER);
     }
 
     public void OnPointerExit(PointerEventData eventData) {

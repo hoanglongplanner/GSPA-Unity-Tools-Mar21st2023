@@ -14,37 +14,32 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-/**
- * author: hoanglongplanner
- * date: Jan 2th 2022
- * des: Managing all type of GUI in game, use Singleton Design Pattern
- */
+// 2023 hoanglongplanner
+// Managing all type of GUI in game, use Singleton Design Pattern
 
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public enum ENUM_SCENE {
-    MAIN_MENU,
-    NORMAL_GAMEMODE,
-    TIMEATTACK_GAMEMODE
-}
-
 public class GUISettings {
-    public static bool K_ENABLE_ON_MOUSE_DOWN = true; //def: true    
-    public static bool K_ENABLE_ON_ENTER = true; //def: true    
-    public static bool K_ENABLE_ON_EXIT = true; //def: true
+    public static bool K_ENABLE_POINTER_ON_MOUSE_DOWN = true; //def: true
+    public static bool K_ENABLE_POINTER_ON_MOUSE_HOLD = false; //def: false
+    public static bool K_ENABLE_POINTER_ON_MOUSE_RELEASE = false; //def: false                                                           
+    public static bool K_ENABLE_POINTER_ON_ENTER_HOVER = true; //def: true    
+    public static bool K_ENABLE_POINTER_ON_EXIT = true; //def: true
 }
 
 public enum ENUM_GUIPAGE {
-    WIN,
-    LOSE
+    K_MAIN_MENU,
+    K_GAMEPLAY,
+    K_WIN,
+    K_LOSE
 }
 
 public enum ENUM_GUIELEMENT_POINTER_STATUS {
     ON_MOUSE_DOWN,
-    ON_ENTER,
+    ON_ENTER_HOVER,
     ON_EXIT
 }
 
@@ -55,8 +50,7 @@ public enum ENUM_GUIELEMENT_OBJECT_TYPE {
 
 public enum ENUM_GUIELEMENT_BUTTON_TYPE {
     FUNCTION_LOADSCENE_MAINMENU,
-    FUNCTION_LOADSCENE_NORMAL_GAMEPLAY,
-    FUNCTION_LOADSCENE_TIMEATTACK_GAMEPLAY,
+    FUNCTION_LOADSCENE_GAMEPLAY,    
     FUNCTION_RESTART_GAME,
     FUNCTION_EXITGAME
 }
@@ -77,12 +71,12 @@ public enum ENUM_GUIELEMENT_SLIDER_TYPE {
 
 public class GUIManager : SingletonBlankMonoBehavior<GUIManager> {
 
-    public GameObject[] sz_m_page;
+    [SerializeField] private GameObject[] sz_m_page;
 
-    public List<GUIElementObject> list_m_guiObject;
-    public List<GUIElementText> list_m_guiText;
-    public List<GUIElementButton> list_m_guiButton;
-    public List<GUIElementSlider> list_m_guiSlider;
+    [SerializeField] private List<GUIElementObject> list_m_guiObject;
+    [SerializeField] private List<GUIElementText> list_m_guiText;
+    [SerializeField] private List<GUIElementButton> list_m_guiButton;
+    [SerializeField] private List<GUIElementSlider> list_m_guiSlider;
 
     private void Awake() => SetupGUIManager(this.transform, true);    
 
@@ -90,8 +84,8 @@ public class GUIManager : SingletonBlankMonoBehavior<GUIManager> {
 
     public void OpenGUIPage(ENUM_GUIPAGE _type) {
         switch (_type) {
-            case ENUM_GUIPAGE.WIN: sz_m_page[(int)ENUM_GUIPAGE.WIN].SetActive(true); break;
-            case ENUM_GUIPAGE.LOSE: sz_m_page[(int)ENUM_GUIPAGE.LOSE].SetActive(true); break;
+            case ENUM_GUIPAGE.K_WIN: sz_m_page[(int)ENUM_GUIPAGE.K_WIN].SetActive(true); break;
+            case ENUM_GUIPAGE.K_LOSE: sz_m_page[(int)ENUM_GUIPAGE.K_LOSE].SetActive(true); break;
             default: break;
         }
     }
@@ -194,12 +188,10 @@ public class GUIManager : SingletonBlankMonoBehavior<GUIManager> {
                 //AudioManager.Instance.PlaySFX_UI(ENUM_AUDIO_SFX_UI_TYPE.SELECT);
 
                 switch (_buttonType) {
-                    case ENUM_GUIELEMENT_BUTTON_TYPE.FUNCTION_LOADSCENE_MAINMENU: UnityEngine.SceneManagement.SceneManager.LoadScene((int)ENUM_SCENE.MAIN_MENU); break;
-                    case ENUM_GUIELEMENT_BUTTON_TYPE.FUNCTION_LOADSCENE_NORMAL_GAMEPLAY: UnityEngine.SceneManagement.SceneManager.LoadScene((int)ENUM_SCENE.NORMAL_GAMEMODE); break;
-                    case ENUM_GUIELEMENT_BUTTON_TYPE.FUNCTION_LOADSCENE_TIMEATTACK_GAMEPLAY: UnityEngine.SceneManagement.SceneManager.LoadScene((int)ENUM_SCENE.TIMEATTACK_GAMEMODE); break;
-                    case ENUM_GUIELEMENT_BUTTON_TYPE.FUNCTION_RESTART_GAME: LoadCurrentScene_AutoBuildIndex(); break;
-                    case ENUM_GUIELEMENT_BUTTON_TYPE.FUNCTION_EXITGAME:
-                        Debug.Log("Exit Game !!");
+                    case ENUM_GUIELEMENT_BUTTON_TYPE.FUNCTION_LOADSCENE_MAINMENU: SceneLevelManager.LoadSceneSpecific(ENUM_SCENE_LEVEL_TYPE.K_MAINMENU); break;
+                    case ENUM_GUIELEMENT_BUTTON_TYPE.FUNCTION_LOADSCENE_GAMEPLAY: SceneLevelManager.LoadSceneSpecific(ENUM_SCENE_LEVEL_TYPE.K_GAMEPLAY); break;                    
+                    case ENUM_GUIELEMENT_BUTTON_TYPE.FUNCTION_RESTART_GAME: SceneLevelManager.LoadSceneCurrentAutoBuildIndex(); break;
+                    case ENUM_GUIELEMENT_BUTTON_TYPE.FUNCTION_EXITGAME:                        
                         if (Application.platform != RuntimePlatform.WebGLPlayer)
                             Application.Quit();
                         break;
@@ -207,7 +199,7 @@ public class GUIManager : SingletonBlankMonoBehavior<GUIManager> {
                 }
                 break;
 
-            case ENUM_GUIELEMENT_POINTER_STATUS.ON_ENTER:
+            case ENUM_GUIELEMENT_POINTER_STATUS.ON_ENTER_HOVER:
                 //AudioManager.Instance.PlaySFX_UI(ENUM_AUDIO_SFX_UI_TYPE.HOVER);
                 break;
 
@@ -228,7 +220,7 @@ public class GUIManager : SingletonBlankMonoBehavior<GUIManager> {
             case ENUM_GUIELEMENT_POINTER_STATUS.ON_MOUSE_DOWN:
                 //AudioManager.Instance.PlaySFX_UI(ENUM_AUDIO_SFX_UI_TYPE.SELECT);
                 break;
-            case ENUM_GUIELEMENT_POINTER_STATUS.ON_ENTER:
+            case ENUM_GUIELEMENT_POINTER_STATUS.ON_ENTER_HOVER:
                 //AudioManager.Instance.PlaySFX_UI(ENUM_AUDIO_SFX_UI_TYPE.HOVER);
                 break;
             case ENUM_GUIELEMENT_POINTER_STATUS.ON_EXIT:
@@ -251,9 +243,5 @@ public class GUIManager : SingletonBlankMonoBehavior<GUIManager> {
                 break;
             default: break;
         }
-    }
-
-    private void LoadCurrentScene_AutoBuildIndex() => UnityEngine.SceneManagement.SceneManager.LoadScene(GetCurrentSceneBuildID());
-
-    private int GetCurrentSceneBuildID() { return UnityEngine.SceneManagement.SceneManager.GetActiveScene().buildIndex; }
+    }    
 }

@@ -41,11 +41,22 @@ public enum ENUM_GAMELOOP_STATE {
 public enum ENUM_GAME_STATUS { K_DRAW, K_WIN, K_LOSE }
 
 public class GameManagerSystem : MonoBehaviour {
+    [Header("GAME MANAGER")]
     [SerializeField] private ENUM_GAMESYSTEM_STATE enum_gameSystemState;
     [SerializeField] private ENUM_GAMELOOP_STATE enum_gameLoopState;
     [SerializeField] private bool isGamePause = false;
 
-    private void Update() => UpdateGameSystemState();
+    [Header("SYSTEM ADVANCE")]
+    [SerializeField] private int i32_framelimit = 60;
+    
+    private void Update() {
+        SetSystemFramerateLimit(i32_framelimit); //WARNING-BE-CAREFUL
+        UpdateGameSystemState(); 
+    }
+
+    //WARNING-BE-CAREFUL
+    //USING THIS FUNCTION CHANGE SOFTWARE BEHAVIOR
+    public static void SetSystemFramerateLimit(int _value = 60) => Application.targetFrameRate = _value;
 
     public void SetGameSystemState(ENUM_GAMESYSTEM_STATE _type) {
         enum_gameSystemState = _type;
@@ -54,6 +65,18 @@ public class GameManagerSystem : MonoBehaviour {
 
     //TODO - Add seperate game loop
     public void SetGameLoopState(ENUM_GAMELOOP_STATE _type) => enum_gameLoopState = _type;
+
+    private void StartGameSystemState() {
+        switch (enum_gameSystemState) {
+            case ENUM_GAMESYSTEM_STATE.K_MAINMENU: break;
+            case ENUM_GAMESYSTEM_STATE.K_GAMEPLAY_INIT: break;
+            case ENUM_GAMESYSTEM_STATE.K_GAMEPLAY_LOOP: break;
+            case ENUM_GAMESYSTEM_STATE.K_GAMEPLAY_CLEANUP: break;
+            case ENUM_GAMESYSTEM_STATE.K_PAUSE: break;
+            case ENUM_GAMESYSTEM_STATE.K_RESUME: break;
+            default: break;
+        }
+    }
 
     private void UpdateGameSystemState() {
         switch (enum_gameSystemState) {

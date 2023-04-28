@@ -19,5 +19,12 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class VFXManager : MonoBehaviour {
+    public enum ENUM_VFX_TYPE {
+        K_EXPLOSION,
+        K_SMOKE
+    }
 
+    private GameObject[] sz_m_vfx;
+    public void SpawnSpecificVFX() { }
+    public void SpawnRandomVFX() { }
 }

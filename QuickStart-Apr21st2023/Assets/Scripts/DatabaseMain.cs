@@ -21,5 +21,6 @@ using UnityEngine.Serialization;
 
 [CreateAssetMenu(fileName = "GameDatabase", menuName = "Project/Database/Create Game Database")]
 public class DatabaseMain : ScriptableObject {
+    [FormerlySerializedAs("Sprite List")] public Sprite[] sz_m_sprite;
     [FormerlySerializedAs("Enemy List")] public GameObject[] sz_m_enemyDatabase;        
 }
