@@ -24,22 +24,20 @@ using UnityEngine.UI;
 using TMPro;
 
 public class GUIElementSlider : MonoBehaviour, IPointerClickHandler, IPointerEnterHandler, IPointerExitHandler {
+    [SerializeField] private GUIManager m_guiManager;
     [SerializeField] private ENUM_GUIELEMENT_SLIDER_TYPE enum_type;
-    private Slider m_slider;
-    private bool isMouseHover = false;
+    [SerializeField] private Slider m_slider;
+    [SerializeField] private bool isMouseHover = false;
 
     public void Setup() {
         m_slider = this.GetComponent<Slider>();        
 
-        m_slider.onValueChanged.AddListener(delegate { GUIManager.Instance.OnGUIElementSlider(this, enum_type); });
+        m_slider.onValueChanged.AddListener(delegate { GUIManager.Instance.OnGUIElementSlider(this, enum_type); });        
 
-        StartCoroutine(RunDelayAction());
-    }
-
-    public IEnumerator RunDelayAction() {
-        yield return new WaitForSeconds(0.5f);
         GUIManager.Instance.OnGUIElementSlider(this, enum_type);
     }
+
+    public void InitSetup(GUIManager _guiManager) => m_guiManager = _guiManager;
 
     public void SetupSlider(float min, float max, float defaultValue, bool isWholeNumber = false) {
         m_slider.wholeNumbers = isWholeNumber;

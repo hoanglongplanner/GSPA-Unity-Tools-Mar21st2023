@@ -23,6 +23,8 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 
 public class GUISettings {
+    public static bool K_USING_SINGLETON_GUIMANAGER = false; //def: false
+    public static bool K_ENABLE_AUTOSETUP_GUIELEMENT = false; //def: false    
     public static bool K_ENABLE_POINTER_ON_MOUSE_DOWN = true; //def: true
     public static bool K_ENABLE_POINTER_ON_MOUSE_HOLD = false; //def: false
     public static bool K_ENABLE_POINTER_ON_MOUSE_RELEASE = false; //def: false                                                           
@@ -30,7 +32,7 @@ public class GUISettings {
     public static bool K_ENABLE_POINTER_ON_EXIT = true; //def: true
 }
 
-public enum ENUM_GUIPAGE {
+public enum ENUM_GUIPAGE_TYPE {
     K_MAIN_MENU,
     K_GAMEPLAY,
     K_WIN,
@@ -71,8 +73,9 @@ public enum ENUM_GUIELEMENT_SLIDER_TYPE {
 
 public class GUIManager : SingletonBlankMonoBehavior<GUIManager> {
 
-    [SerializeField] private GameObject[] sz_m_page;
+    [SerializeField] private GameObject[] sz_m_page; //TODO - REMOVE
 
+    [SerializeField] private List<GUIPage> list_m_guiPage;
     [SerializeField] private List<GUIElementObject> list_m_guiObject;
     [SerializeField] private List<GUIElementText> list_m_guiText;
     [SerializeField] private List<GUIElementButton> list_m_guiButton;
@@ -82,10 +85,21 @@ public class GUIManager : SingletonBlankMonoBehavior<GUIManager> {
 
     private void Start() => UpdateGUIElementObject(ENUM_GUIELEMENT_OBJECT_TYPE.TIMER);
 
-    public void OpenGUIPage(ENUM_GUIPAGE _type) {
+    public void OpenGUIPage(ENUM_GUIPAGE_TYPE _type, bool _isCloseAllPage = true) {
+
+        if (_isCloseAllPage) foreach (GameObject page in sz_m_page) page.SetActive(false);
+
+        else if(_isCloseAllPage == false) {
+            switch (_type) {
+                case ENUM_GUIPAGE_TYPE.K_WIN: break;
+                case ENUM_GUIPAGE_TYPE.K_LOSE: break;
+                default: break;
+            }
+        }
+
         switch (_type) {
-            case ENUM_GUIPAGE.K_WIN: sz_m_page[(int)ENUM_GUIPAGE.K_WIN].SetActive(true); break;
-            case ENUM_GUIPAGE.K_LOSE: sz_m_page[(int)ENUM_GUIPAGE.K_LOSE].SetActive(true); break;
+            case ENUM_GUIPAGE_TYPE.K_WIN: sz_m_page[(int)ENUM_GUIPAGE_TYPE.K_WIN].SetActive(true); break;
+            case ENUM_GUIPAGE_TYPE.K_LOSE: sz_m_page[(int)ENUM_GUIPAGE_TYPE.K_LOSE].SetActive(true); break;
             default: break;
         }
     }

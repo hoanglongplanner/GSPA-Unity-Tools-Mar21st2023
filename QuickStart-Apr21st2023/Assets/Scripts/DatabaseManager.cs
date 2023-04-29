@@ -20,6 +20,7 @@ using UnityEngine;
 
 public class DatabaseManager : MonoBehaviour {
     [SerializeField] private DatabaseMain m_database;
+    public void SetNewDatabase(DatabaseMain _databaseMain) => m_database = _databaseMain;
     public DatabaseMain GetDatabase() { return m_database; }
-    public GameObject[] GetEnemyDatabase() { return m_database.sz_m_enemyDatabase; }
+    public GameObject[] GetEnemyData() { return m_database.sz_m_enemyDatabase; }
 }

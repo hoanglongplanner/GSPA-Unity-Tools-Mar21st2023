@@ -1,25 +1,9 @@
-/*
-Copyright 2023 hoanglongplanner 
-
-Licensed under the Apache License, Version 2.0 (the "License");
-you may not use this file except in compliance with the License.
-
-You may obtain a copy of the License at
-http://www.apache.org/licenses/LICENSE-2.0
-
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language governing permissions and
-limitations under the License.
-*/
-
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class InputManager : MonoBehaviour {
+public class ReworkInputManager : MonoBehaviour {
     public enum ENUM_INPUT_CONTEXT_FUNCTION {
         K_MOVE_UP,
         K_MOVE_DOWN,
@@ -50,7 +34,29 @@ public class InputManager : MonoBehaviour {
 
         public ENUM_INPUT_CONTEXT_FUNCTION GetTypeContextFunction() { return enum_contextType; }
         public KeyCode[] GetArrayKeycode() { return sz_m_keycode; }
-    }    
+    }
+
+    class HotkeyCombination {
+        private ENUM_INPUT_CONTEXT_FUNCTION enum_contextType;
+        private KeyCode[] sz_m_keycode;
+        private bool isPressSucessful = false;
+
+        public HotkeyCombination(ENUM_INPUT_CONTEXT_FUNCTION _contextType, KeyCode[] _keyCode) {
+            enum_contextType = _contextType;
+            sz_m_keycode = _keyCode;
+        }
+
+        public ENUM_INPUT_CONTEXT_FUNCTION GetTypeContextFunction() { return enum_contextType; }
+        public KeyCode[] GetArrayKeycode() { return sz_m_keycode; }
+
+        public bool IsAnyOtherKeyPressed() {
+            foreach (KeyCode keyCode in sz_m_keycode) {
+                if (Input.GetKey(keyCode))
+                    return true; //return-result-there-are-other-key
+            }
+            return false; //return-none
+        }
+    }
 
     private HotkeySingle[] sz_m_hotkeySingle = new HotkeySingle[] {
         new HotkeySingle(ENUM_INPUT_CONTEXT_FUNCTION.K_MOVE_UP, new KeyCode[]{ KeyCode.W, KeyCode.UpArrow}),
@@ -58,19 +64,24 @@ public class InputManager : MonoBehaviour {
         new HotkeySingle(ENUM_INPUT_CONTEXT_FUNCTION.K_MOVE_LEFT, new KeyCode[]{ KeyCode.A, KeyCode.LeftArrow}),
         new HotkeySingle(ENUM_INPUT_CONTEXT_FUNCTION.K_MOVE_RIGHT, new KeyCode[]{ KeyCode.D, KeyCode.RightArrow}),
         new HotkeySingle(ENUM_INPUT_CONTEXT_FUNCTION.K_PAUSE_GAME, new KeyCode[]{ KeyCode.Escape, KeyCode.P}),
-    };    
+    };
+
+    private HotkeyCombination[] sz_m_hotkeyCombination = new HotkeyCombination[] {
+        new HotkeyCombination(ENUM_INPUT_CONTEXT_FUNCTION.K_MOVE_UP, new KeyCode[]{ KeyCode.W, KeyCode.UpArrow}),
+        new HotkeyCombination(ENUM_INPUT_CONTEXT_FUNCTION.K_MOVE_DOWN, new KeyCode[]{ KeyCode.S, KeyCode.DownArrow}),
+    };
 
     public Vector3 vec3_mousePos;
     [SerializeField] private bool isClickTapOnce = false;
-    [SerializeField] private bool isAnyKeyPress = false;
+    [SerializeField] private bool isAllowHotkeyCombination = false;
     [SerializeField] private bool isAllowInput = true;
 
     private void Awake() {
-        KeyCode[] sz_m_keycode = (KeyCode[])Enum.GetValues(typeof(KeyCode));
+        KeyCode[] allKeys = (KeyCode[])Enum.GetValues(typeof(KeyCode));
     }
 
     private void Start() {
-        
+
     }
 
     void Update() {
@@ -107,16 +118,24 @@ public class InputManager : MonoBehaviour {
         if (Input.GetMouseButtonUp(0) || Input.GetMouseButtonUp(1) || Input.GetMouseButtonUp(2)) HandleLogicRelease();
     }
 
-    public void UpdateInputKeyboard() {        
+    public void UpdateInputKeyboard() {
 
         //Performance Concern, may better than Dictionary method
-        foreach(HotkeySingle temp in sz_m_hotkeySingle) {
-            foreach(KeyCode keyCode in temp.GetArrayKeycode()) {
+        foreach (HotkeySingle temp in sz_m_hotkeySingle) {
+            foreach (KeyCode keyCode in temp.GetArrayKeycode()) {
                 if (Input.GetKeyDown(keyCode)) HandleKeyboardEvent(ENUM_INPUT_TYPE.K_PRESS, temp.GetTypeContextFunction());
                 //if (Input.GetKey(keyCode)) HandleKeyboardEvent(ENUM_INPUT_TYPE.K_HOLD, temp.GetTypeContextFunction());
                 if (Input.GetKeyUp(keyCode)) HandleKeyboardEvent(ENUM_INPUT_TYPE.K_RELEASE, temp.GetTypeContextFunction());
             }
-        }        
+        }
+
+        if (isAllowHotkeyCombination == false) return; //check-functionality
+        foreach (HotkeyCombination temp in sz_m_hotkeyCombination) {
+            foreach (KeyCode keyCode in temp.GetArrayKeycode()) {
+                if (Input.GetKeyDown(keyCode)) HandleKeyboardEvent(ENUM_INPUT_TYPE.K_PRESS, temp.GetTypeContextFunction());
+                if (Input.GetKeyUp(keyCode)) HandleKeyboardEvent(ENUM_INPUT_TYPE.K_RELEASE, temp.GetTypeContextFunction());
+            }
+        }
     }
 
     //TODO Include support for controller

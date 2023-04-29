@@ -21,5 +21,8 @@ public class SingletonBlankMonoBehavior<T> : MonoBehaviour where T : MonoBehavio
 
     protected virtual void OnDestroy() => instance = null;
 
+    /// <summary>
+    /// Override this function, if need run extra functions in Awake Runtime
+    /// </summary>
     public virtual void SingletonAwake() { }
 }

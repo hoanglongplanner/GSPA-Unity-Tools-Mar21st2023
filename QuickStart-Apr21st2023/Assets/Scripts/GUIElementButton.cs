@@ -19,15 +19,18 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class GUIElementButton : MonoBehaviour, IPointerClickHandler, IPointerEnterHandler, IPointerExitHandler {
+public class GUIElementButton : MonoBehaviour, IPointerClickHandler, IPointerEnterHandler, IPointerExitHandler, IPointerDownHandler, IPointerUpHandler {
+    [SerializeField] private GUIManager m_guiManager;
     [SerializeField] private ENUM_GUIELEMENT_BUTTON_TYPE enum_type;
+
+    public void InitSetup(GUIManager _guiManager) => m_guiManager = _guiManager;
 
     public bool IsType(ENUM_GUIELEMENT_BUTTON_TYPE _type) { return _type == enum_type; }
 
     public void OnPointerClick(PointerEventData eventData) {
         if (GUISettings.K_ENABLE_POINTER_ON_MOUSE_DOWN == false) return; //Check-functionality
         GUIManager.Instance.OnGUIElementButton(this, enum_type, ENUM_GUIELEMENT_POINTER_STATUS.ON_MOUSE_DOWN);
-    }        
+    }
 
     public void OnPointerEnter(PointerEventData eventData) {
         if (GUISettings.K_ENABLE_POINTER_ON_ENTER_HOVER == false) return; //Check-functionality        
@@ -37,5 +40,13 @@ public class GUIElementButton : MonoBehaviour, IPointerClickHandler, IPointerEnt
     public void OnPointerExit(PointerEventData eventData) {
         if (GUISettings.K_ENABLE_POINTER_ON_EXIT == false) return; //Check-functionality        
         GUIManager.Instance.OnGUIElementButton(this, enum_type, ENUM_GUIELEMENT_POINTER_STATUS.ON_EXIT);
+    }
+
+    public void OnPointerDown(PointerEventData eventData) {
+        throw new System.NotImplementedException();
+    }
+
+    public void OnPointerUp(PointerEventData eventData) {
+        throw new System.NotImplementedException();
     }
 }

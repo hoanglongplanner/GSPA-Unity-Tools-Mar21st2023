@@ -14,8 +14,12 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-public class GUIElementObject : UnityEngine.MonoBehaviour {
-    public ENUM_GUIELEMENT_OBJECT_TYPE enum_type;
+using UnityEngine;
+
+public class GUIElementObject : MonoBehaviour {
+    [SerializeField] private GUIManager m_guiManager;
+    [SerializeField] private ENUM_GUIELEMENT_OBJECT_TYPE enum_type;
+    public void InitSetup(GUIManager _guiManager) => m_guiManager = _guiManager;
     public bool IsType(ENUM_GUIELEMENT_OBJECT_TYPE _type) { return _type == enum_type; }
     public bool IsActive() { return isActiveAndEnabled; }
     public void SetStatusObjectActive(bool _status) { this.gameObject.SetActive(_status); }

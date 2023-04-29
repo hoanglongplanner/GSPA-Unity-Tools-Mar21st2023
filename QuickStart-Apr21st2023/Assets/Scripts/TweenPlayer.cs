@@ -23,6 +23,19 @@ public class TweenPlayer : MonoBehaviour {
         K_GUI_NAVIGATION
     }
 
+    public enum ENUM_TWEEN_GUI_DIRECTION {
+        K_UP,
+        K_DOWN,
+        K_LEFT,
+        K_RIGHT,
+        K_UPLEFT
+    }
+
+    private ENUM_TWEEN_TYPE enum_tweenType;
+    private bool isTweenComplete;
+
+    public ENUM_TWEEN_TYPE GetTweenType() { return enum_tweenType; }
+
     public void PlayTween(ENUM_TWEEN_TYPE _type) {
         switch (_type) {
             case ENUM_TWEEN_TYPE.K_GUI_NAVIGATION: break;
@@ -35,5 +48,14 @@ public class TweenPlayer : MonoBehaviour {
             case ENUM_TWEEN_TYPE.K_GUI_NAVIGATION: break;
             default: break;
         }
+    }
+
+    public void TweenGUI() {
+        //UP DOWN LEFT RIGHT
+        //FROM ANCHOR
+    }
+
+    public void TweenValueColor() {
+        //TO NEW COLOUR        
     }
 }
