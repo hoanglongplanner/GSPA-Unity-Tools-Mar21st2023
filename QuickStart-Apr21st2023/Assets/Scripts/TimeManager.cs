@@ -18,14 +18,17 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-//TODO: Add time stop, slow time or something feature
+//TODO: Add time stop, slow time or something feature from Dead Rising, Max Paine 3
 
 public class TimeManager : MonoBehaviour {
     class TimeConstants {
-        public static readonly float[] K_TIME_ELAPSE = { 0, 100, 0 };
-        public static readonly float[] K_TIME_LIMIT = { 0, 100, 0 };
-        public const float K_TIME_ELAPSE_RATE = 1.0f;
-        public const float K_TIME_LIMIT_RATE = 1.0f;
+        private static readonly float[] K_TIME_ELAPSE = { 0.0f, float.MaxValue, 0.0f }; //min - 0.0f, max - float.MaxValue, def - 0.0f
+        private static readonly float[] K_TIME_LIMIT = { 0, 100, 0 };
+        private const float K_TIME_ELAPSE_RATE = 0.001f;
+        private const float K_TIME_LIMIT_RATE = 1.0f;
+
+        public static float GetTimeElapseDefault() { return K_TIME_ELAPSE[2]; }
+        public static float GetTimeElapseRate() { return K_TIME_ELAPSE_RATE; }
     }
 
     public enum ENUM_TIME_TYPE {
@@ -35,11 +38,18 @@ public class TimeManager : MonoBehaviour {
         K_TIME_LIMIT_CONDITION
     }
     
-    float f_timeElapse;
-    float f_timeLimit;
+    private float f_timeElapse;
+    private float f_timeLimit;
 
     bool isAllowTimeElapse = false;
     bool isAllowTimeLimit = false;
+    private bool isUsingInvokeTimeElapse = false;
+
+    private void OnEnable() {
+        //if(isUsingInvokeTimeElapse) InvokeRepeating()
+    }
+
+    private void OnDisable() => CancelInvoke();
 
     private void Start() { }
 
@@ -47,7 +57,7 @@ public class TimeManager : MonoBehaviour {
 
     public void ResetSpecificValueDefault(ENUM_TIME_TYPE _type) {
         switch (_type) {
-            case ENUM_TIME_TYPE.K_TIME_ELAPSE: break;
+            case ENUM_TIME_TYPE.K_TIME_ELAPSE: f_timeElapse = TimeConstants.GetTimeElapseDefault(); break;
             case ENUM_TIME_TYPE.K_TIME_LIMIT: break;
             case ENUM_TIME_TYPE.K_TIME_ELAPSE_CONDITION: break;
             case ENUM_TIME_TYPE.K_TIME_LIMIT_CONDITION: break;
@@ -59,8 +69,9 @@ public class TimeManager : MonoBehaviour {
     public void SetStatusAllowTimeLimit(bool _status) => isAllowTimeLimit = _status;    
 
     public void SetTimeLimit(float _value) { }
+
     public void IncreaseTimeElapse() { 
-        f_timeElapse += TimeConstants.K_TIME_ELAPSE_RATE;
+        f_timeElapse += TimeConstants.GetTimeElapseRate();
         OnTimeValueChange(ENUM_TIME_TYPE.K_TIME_ELAPSE);
     }
     public void IncreaseTimeLimit() { }

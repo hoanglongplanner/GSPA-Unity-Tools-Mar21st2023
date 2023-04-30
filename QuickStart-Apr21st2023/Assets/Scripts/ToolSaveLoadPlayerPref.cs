@@ -1,7 +1,23 @@
-//
+/*
+Copyright 2023 hoanglongplanner 
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+
+You may obtain a copy of the License at
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/
+
+
 // (c) hoanglongplanner - 2023
 // This version combine both PlayerPrefs and PlayerPrefsX
-//
+
 
 using System;
 using System.Collections;
@@ -26,7 +42,7 @@ public class ToolSaveLoadPlayerPref {
     }
 
     public static void SetInt(string name, int value) => PlayerPrefs.SetInt(name, value);
-    public static int GetInt(string name, int value) { return PlayerPrefs.GetInt(name); }
+    public static int GetInt(string name) { return PlayerPrefs.GetInt(name); }
 
     public static void SetFloat(string name, float value) => PlayerPrefs.SetFloat(name, value);
     public static float GetFloat(string name) { return PlayerPrefs.GetFloat(name); }
