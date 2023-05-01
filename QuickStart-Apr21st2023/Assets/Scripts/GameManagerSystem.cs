@@ -33,7 +33,7 @@ public enum ENUM_GAMESYSTEM_STATE {
     K_RESUME
 }
 
-public enum ENUM_GAMELOOP_STATE {
+public enum ENUM_GAMELOOP_STATEFLOW {
     K_PLAYER_TURN,
     K_THREAT_TURN
 }
@@ -43,7 +43,7 @@ public enum ENUM_GAME_STATUS { K_DRAW, K_WIN, K_LOSE }
 public class GameManagerSystem : MonoBehaviour {
     [Header("GAME MANAGER")]
     [SerializeField] private ENUM_GAMESYSTEM_STATE enum_gameSystemState;
-    [SerializeField] private ENUM_GAMELOOP_STATE enum_gameLoopState;
+    [SerializeField] private ENUM_GAMELOOP_STATEFLOW enum_gameLoopState;
     [SerializeField] private bool isGamePause = false;
 
     [Header("SYSTEM ADVANCE")]
@@ -64,7 +64,7 @@ public class GameManagerSystem : MonoBehaviour {
     }
 
     //TODO - Add seperate game loop
-    public void SetGameLoopState(ENUM_GAMELOOP_STATE _type) => enum_gameLoopState = _type;
+    public void SetGameLoopState(ENUM_GAMELOOP_STATEFLOW _type) => enum_gameLoopState = _type;
 
     private void StartGameSystemState() {
         switch (enum_gameSystemState) {

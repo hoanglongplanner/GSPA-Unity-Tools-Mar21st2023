@@ -2,17 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MinimapViewer : MonoBehaviour
-{
-    // Start is called before the first frame update
-    void Start()
-    {
-        
+//Use RawImage Material, Camera Rendering to UI only
+
+public class MinimapViewer : MonoBehaviour {
+    void Start() {
+
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
+    void Update() {
+
     }
 }
