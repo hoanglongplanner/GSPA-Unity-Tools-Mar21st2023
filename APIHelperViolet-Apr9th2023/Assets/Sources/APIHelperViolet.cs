@@ -37,6 +37,46 @@ using System.Collections.Generic;
 
 namespace APIHelperVioletRoot {
 
+    public interface APIHelperVioletInterface {
+        public interface IGameEngineBehavior {
+            public abstract void EngineInit();
+            public abstract void EngineStart();
+            public abstract void EngineUpdate();
+            public abstract void EngineUpdateFixed();
+            public abstract void EngineSchedule(int _framerate);
+        }
+
+        public interface IMonoBehaviorBlankAppLogic {
+            public abstract void AppStart();
+            public abstract void AppUpdate();
+            public abstract void AppSchedule(int _framerate);
+            public abstract void OnAppExit();
+        }
+        
+        public interface IMonoBehaviorBlankGameLogic {
+            public abstract void GameLogicInit();
+            public abstract void GameLogicStart();
+            public abstract void GameLogicUpdate();
+            public abstract void GameLogicUpdateFixed();
+            public abstract void GameLogicSchedule(int _framerate);
+        }
+        
+        public interface MonoBehaviorBlankDrawLogic {
+            public abstract void DrawStart();
+            public abstract void DrawUpdate();
+            public abstract void DrawSchedule(int _framerate);
+        }
+        
+        public interface MonoBehaviorBlankInputLogic {
+            public virtual void InputUpdate() { }
+        }
+
+        public interface MonoBehaviorEditorLogic {
+            public abstract void OnObjectSelected();
+            public abstract void EditorUpdate();            
+        }
+    }
+
     /// <summary>
     /// Exclusive Class for API Helper Violet
     /// </summary>
@@ -48,6 +88,70 @@ namespace APIHelperVioletRoot {
     }
 
     public static class Core { }
+
+    /// <summary>
+    /// Based on MonoGame API Setup
+    /// </summary>
+    public class MonoBehavior {
+
+    }
+
+    /// <summary>
+    /// Mother of all application, the engine itself
+    /// </summary>
+    public class MonoBehaviorEngine : APIHelperVioletInterface.IGameEngineBehavior {
+        public void EngineInit() {
+            throw new NotImplementedException();
+        }
+
+        public void EngineStart() {
+            throw new NotImplementedException();
+        }
+
+        public void EngineUpdate() {
+            throw new NotImplementedException();
+        }
+
+        public void EngineUpdateFixed() {
+            throw new NotImplementedException();
+        }
+        public void EngineSchedule(int _framerate) {
+            throw new NotImplementedException();
+        }
+    }
+
+    public class MonoBehaviorBlankAppLogic {
+        public virtual void AppStart() { }
+        public virtual void AppUpdate() { }
+        public virtual void AppSchedule(int _framerate) { }
+    }
+
+    /// <summary>
+    /// Logic for Game Stuff
+    /// </summary>
+    public class MonoBehaviorBlankGameLogic {
+        public virtual void GameLogicInit() { }
+        public virtual void GameLogicStart() { }
+        public virtual void GameLogicUpdate() { }
+        public virtual void GameLogicUpdateFixed() { }
+        public virtual void GameLogicSchedule(int _framerate) { }
+    }
+
+    /// <summary>
+    /// Logic for Shader
+    /// </summary>
+    public class MonoBehaviorBlankDrawLogic {
+        public virtual void DrawStart() { }
+        public virtual void DrawUpdate() { }
+        public virtual void DrawSchedule(int _framerate) { }
+    }
+
+    /// <summary>
+    /// Logic for Input
+    /// </summary>
+    public class MonoBehaviorBlankInputLogic {
+        public virtual void InputUpdate() { }
+    }
 
     public static class Transform {
 
@@ -241,7 +345,7 @@ namespace APIHelperVioletRoot {
 
         // Returns /f/ rounded to the nearest integer.
         public static int RoundToInt(float f) { return (int)Math.Round(f); }
-        
+
         /// <summary>
         /// Clamps value between min and max and returns value. 
         /// </summary>                
@@ -252,7 +356,7 @@ namespace APIHelperVioletRoot {
                 value = max;
             return value;
         }
-        
+
         /// <summary>
         /// Clamps value between 0 and 1 and returns value 
         /// </summary>        
@@ -265,7 +369,7 @@ namespace APIHelperVioletRoot {
                 return value;
         }
     }
-    
+
     public static class ToolTweenLerp { }
 
     /// <summary>
@@ -284,23 +388,6 @@ namespace APIHelperVioletRoot {
             ERROR, //something failed
             FATAL //deadly for application
         };
-
-        /// <summary>
-        /// TODO: ADD LOGIC.
-        /// DO NOT USE, STILL IN DEVELOPMENT.
-        /// This function is designed as output message based on LOG LEVEL type.
-        /// </summary>        
-        public static void Log(ENUM_LOG_LEVEL_TYPE _type, object _message, UnityEngine.Object _origin) {
-            switch (_type) {
-                case ENUM_LOG_LEVEL_TYPE.TRACE: break;
-                case ENUM_LOG_LEVEL_TYPE.DEBUG: break;
-                case ENUM_LOG_LEVEL_TYPE.INFO: break;
-                case ENUM_LOG_LEVEL_TYPE.WARN: break;
-                case ENUM_LOG_LEVEL_TYPE.ERROR: break;
-                case ENUM_LOG_LEVEL_TYPE.FATAL: break;
-                default: break;
-            }
-        }
 
         /// <summary>
         /// Log a message to Unity Console
