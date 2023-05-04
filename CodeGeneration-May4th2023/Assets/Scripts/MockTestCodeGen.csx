@@ -1,19 +1,25 @@
 ﻿public class MockTestCodeGen {
 
     public class ConcurentValueObject<T> {
-        private string str_name;
+        private string str_namePrefix;
+        private string str_nameNoPrefix;
+        private ENUM_CODEGEN_VARIABLE_TYPE enum_variableType;
         private T t_min;
         private T t_max;
         private T t_default;
 
-        public ConcurentValueObject(string _name, T _min, T _max, T _default) {
-            str_name = _name;
+        public ConcurentValueObject(string _namePrefix, string _nameNoPrefix, ENUM_CODEGEN_VARIABLE_TYPE _variableType, T _min, T _max, T _default) {
+            str_namePrefix = _namePrefix;
+            str_nameNoPrefix = _nameNoPrefix;
+            enum_variableType = _variableType;
             t_min = _min;
             t_max = _max;
             t_default = _default;
         }
 
-        public string GetName() { return str_name; }
+        public string GetNameWithPrefix() { return str_namePrefix; }
+        public string GetNameNoPrefix() { return str_nameNoPrefix; }
+        public string GetVariableName() { return GetStringVariableType(enum_variableType); }
         public T GetValueMin() { return t_min; }
         public T GetValueMax() { return t_max; }
         public T GetValueDefault() { return t_default; }
@@ -36,7 +42,7 @@
         K_ARRAY_BOOL,
     }
 
-    public string GetStringAccessType(ENUM_CODEGEN_ACCESS_TYPE _type) {
+    public static string GetStringAccessType(ENUM_CODEGEN_ACCESS_TYPE _type) {
         switch (_type) {
             case ENUM_CODEGEN_ACCESS_TYPE.K_PUBLIC: return "public";
             case ENUM_CODEGEN_ACCESS_TYPE.K_PRIVATE: return "private";
@@ -46,7 +52,7 @@
         }
     }
 
-    public string GetStringVariableType(ENUM_CODEGEN_VARIABLE_TYPE _type) {
+    public static string GetStringVariableType(ENUM_CODEGEN_VARIABLE_TYPE _type) {
         switch (_type) {
             case ENUM_CODEGEN_VARIABLE_TYPE.K_VOID: return "void";
             case ENUM_CODEGEN_VARIABLE_TYPE.K_INT: return "int";
@@ -59,9 +65,12 @@
         }
     }    
 
-    FormattableString ExtensionGenerateConcurent<T>(ConcurentValueObject<T> concurentValueObject) {   
+    FormattableString ExtGenerateConcurent<T>(ConcurentValueObject<T> concurentValueObject) {   
     return $$""" 
-    private static readonly {{typeof(T).ToString()}}[] {{concurentValueObject.GetName}} = { {{concurentValueObject.GetValueMin()}}, {{concurentValueObject.GetValueMax}}, {{concurentValueObject.GetValueDefault}} };
+    private static readonly {{concurentValueObject.GetVariableName()}}[] {{concurentValueObject.GetNameWithPrefix()}} = { {{concurentValueObject.GetValueMin()}}, {{concurentValueObject.GetValueMax}}, {{concurentValueObject.GetValueDefault}} };
+    public static {{concurentValueObject.GetVariableName()}} GetValueMin{{concurentValueObject.GetNameNoPrefix()}} () { return {{concurentValueObject.GetNameWithPrefix()}}[0]; }
+    public static {{concurentValueObject.GetVariableName()}} GetValueMax{{concurentValueObject.GetNameNoPrefix()}} () { return {{concurentValueObject.GetNameWithPrefix()}}[1]; }
+    public static {{concurentValueObject.GetVariableName()}} GetValueDefault{{concurentValueObject.GetNameNoPrefix()}} () { return {{concurentValueObject.GetNameWithPrefix()}}[2]; }
     """;
     }
 
@@ -78,17 +87,19 @@
 
     FormattableString GenerateContent() {
 
-    string[] sz_str_othervalueFunction = new string[] { "ResetSpecificValueDefault", "ResetSpecificValueMin", "ResetSpecificValueMax" };    
-    ConcurentValueObject<int> intObject = new ConcurentValueObject<int>("K_COIN", 0, 100, 0);
+    string[] sz_str_othervalueFunction = new string[] { "ResetSpecificValueDefault", "ResetSpecificValueMin", "ResetSpecificValueMax" };
+    ConcurentValueObject<int> intObject = new ConcurentValueObject<int>("K_COIN", "Coin", ENUM_CODEGEN_VARIABLE_TYPE.K_INT, 0, 100, 0);
+    ConcurentValueObject<float> floatObject = new ConcurentValueObject<float>("K_FEVER", "Fever", ENUM_CODEGEN_VARIABLE_TYPE.K_FLOAT, 0.0f, 100.0f, 0.0f);
 
     FormattableString[] sz_m_formattableString = new FormattableString[] {
         ExtensionGenerateFunctionMethod(ENUM_CODEGEN_ACCESS_TYPE.K_PRIVATE_STATIC_READONLY, ENUM_CODEGEN_VARIABLE_TYPE.K_ARRAY_FLOAT, "MethodSomething"),        
-        ExtensionGenerateConcurent(intObject),
+        ExtGenerateConcurent(intObject),
+        ExtGenerateConcurent(floatObject),
     };
 
     //Return all result here
     return $$"""    
-    {{ExtensionGenerateClassContentArray("TestingClassArray", true, sz_m_formattableString)}}    
+    {{ExtensionGenerateClassContentArray("ConcurentClassConstants", true, sz_m_formattableString)}}    
     """;
     }
 

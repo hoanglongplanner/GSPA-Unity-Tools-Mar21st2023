@@ -14,11 +14,19 @@
     * See the License for the specific language governing permissions and
     * limitations under the License.
     */
-    public class TestingClassArray {
+    public class ConcurentClassConstants {
         private static readonly float[] MethodSomething() {
 
         }
 
-        private static readonly System.Int32[] K_COIN = { 0, 100, 0 };
+        private static readonly int[] K_COIN = { 0, 100, 0 };
+        public static int GetValueMinCoin () { return K_COIN[0]; }
+        public static int GetValueMaxCoin () { return K_COIN[1]; }
+        public static int GetValueDefaultCoin () { return K_COIN[2]; }
+
+        private static readonly float[] K_FEVER = { 0, 100, 0 };
+        public static float GetValueMinFever () { return K_FEVER[0]; }
+        public static float GetValueMaxFever () { return K_FEVER[1]; }
+        public static float GetValueDefaultFever () { return K_FEVER[2]; }
     }
 }

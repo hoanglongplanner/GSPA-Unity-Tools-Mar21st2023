@@ -5,19 +5,25 @@ using UnityEngine;
 public class MockTestScript : MonoBehaviour
 {
     public class ConcurentValueObject<T> {
-        private string str_name;
+        private string str_namePrefix;
+        private string str_nameNoPrefix;
+        private ENUM_CODEGEN_VARIABLE_TYPE enum_variableType;
         private T t_min;
         private T t_max;
         private T t_default;
 
-        public ConcurentValueObject(string _name, T _min, T _max, T _default) {
-            str_name = _name;
+        public ConcurentValueObject(string _namePrefix, string _nameNoPrefix, ENUM_CODEGEN_VARIABLE_TYPE _variableType, T _min, T _max, T _default) {
+            str_namePrefix = _namePrefix;
+            str_nameNoPrefix = _nameNoPrefix;
+            enum_variableType = _variableType;
             t_min = _min;
             t_max = _max;
             t_default = _default;
         }
 
-        public string GetName() { return str_name; }
+        public string GetNameWithPrefix() { return str_namePrefix; }
+        public string GetNameNoPrefix() { return str_nameNoPrefix; }
+        public string GetVariableName() { return GetStringVariableType(enum_variableType); }
         public T GetValueMin() { return t_min; }
         public T GetValueMax() { return t_max; }
         public T GetValueDefault() { return t_default; }
@@ -50,7 +56,7 @@ public class MockTestScript : MonoBehaviour
         }
     }
 
-    public string GetStringMethodName(ENUM_CODEGEN_VARIABLE_TYPE _type) {
+    public static string GetStringVariableType(ENUM_CODEGEN_VARIABLE_TYPE _type) {
         switch (_type) {
             case ENUM_CODEGEN_VARIABLE_TYPE.K_VOID: return "void";                
             case ENUM_CODEGEN_VARIABLE_TYPE.K_INT: return "int";                
