@@ -14,21 +14,8 @@
     * See the License for the specific language governing permissions and
     * limitations under the License.
     */
-    public class HelloThere {
-        public void HelloThereClass() {
-
-        }
-    }
     public class ClassArray {
-        public void HelloThereClass() {
-
-        }
-
-        public void HelloThereClass02() {
-
-        }
-
-        public void HelloThereClass03() {
+        public int[] HelloThereClass() {
 
         }
     }

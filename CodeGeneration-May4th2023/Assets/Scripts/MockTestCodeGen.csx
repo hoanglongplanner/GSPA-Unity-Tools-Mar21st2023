@@ -1,4 +1,69 @@
 ﻿public class MockTestCodeGen {
+
+    public enum ENUM_CODEGEN_ACCESS_TYPE {
+        K_PUBLIC,
+        K_PRIVATE,
+        K_PROTECTED
+    }
+
+    public enum ENUM_CODEGEN_VARIABLE_TYPE {
+        K_VOID,
+        K_INT,
+        K_FLOAT,
+        K_BOOL,
+        K_ARRAY_INT,
+        K_ARRAY_FLOAT,
+        K_ARRAY_BOOL,
+    }
+
+    public string GetStringAccessType(ENUM_CODEGEN_ACCESS_TYPE _type) {
+        switch (_type) {
+            case ENUM_CODEGEN_ACCESS_TYPE.K_PUBLIC: return "public";
+            case ENUM_CODEGEN_ACCESS_TYPE.K_PRIVATE: return "private";
+            case ENUM_CODEGEN_ACCESS_TYPE.K_PROTECTED: return "protected";
+            default: return null;
+        }
+    }
+
+    public string GetStringVariableType(ENUM_CODEGEN_VARIABLE_TYPE _type) {
+        switch (_type) {
+            case ENUM_CODEGEN_VARIABLE_TYPE.K_VOID: return "void";
+            case ENUM_CODEGEN_VARIABLE_TYPE.K_INT: return "int";
+            case ENUM_CODEGEN_VARIABLE_TYPE.K_FLOAT: return "float";
+            case ENUM_CODEGEN_VARIABLE_TYPE.K_BOOL: return "bool";
+            case ENUM_CODEGEN_VARIABLE_TYPE.K_ARRAY_INT: return "int[]";
+            case ENUM_CODEGEN_VARIABLE_TYPE.K_ARRAY_FLOAT: return "float[]";
+            case ENUM_CODEGEN_VARIABLE_TYPE.K_ARRAY_BOOL: return "bool[]";
+            default: return null;
+        }
+    }    
+
+    FormattableString ExtensionGenerateFunctionMethod(ENUM_CODEGEN_ACCESS_TYPE _accessType, ENUM_CODEGEN_VARIABLE_TYPE _variType, string _functionName, FormattableString _content = null) {
+   
+    return $$"""
+    {{GetStringAccessType(_accessType)}} {{GetStringVariableType(_variType)}} {{_functionName}}() {        
+        {{_content}}
+    }
+    """;
+    }
+
+    //--MAIN-CONTENT--
+    //EDIT ALL YOUR STUFF HERE
+
+    FormattableString GenerateContent() {
+
+    string[] sz_str_othervalueFunction = new string[] { "ResetSpecificValueDefault", "ResetSpecificValueMin", "ResetSpecificValueMax" };
+
+    FormattableString[] sz_m_formattableString = new FormattableString[] {
+        ExtensionGenerateFunctionMethod(ENUM_CODEGEN_ACCESS_TYPE.K_PUBLIC, ENUM_CODEGEN_VARIABLE_TYPE.K_ARRAY_INT, "HelloThereClass"),        
+    };
+
+    //Return all result here
+    return $$"""    
+    {{ExtensionGenerateClassContentArray("ClassArray", true, sz_m_formattableString)}}    
+    """;
+    }
+
     FormattableString Main() {
 
         var model = new {
@@ -7,40 +72,15 @@
             str_namespace = "CustomPlaceholderName",
             sz_str_classes = new string[] { "Users", "Products" },
             sz_str_valueFunction = new string[] { "Something" },
-        };
-
-        FormattableString[] sz_m_formattableString = new FormattableString[] {
-            ExtensionGenerateFunctionMethod("HelloThereClass"),
-            ExtensionGenerateFunctionMethod("HelloThereClass02"),
-            ExtensionGenerateFunctionMethod("HelloThereClass03")
-        };
+        };        
 
         return $$"""                                                
             namespace {{model.str_namespace}} {      
-                {{GenerateLicenseApacheV2(model.i32_licenseYear, model.str_licenseOwner)}}
-                {{ExtensionGenerateClass("HelloThere", ExtensionGenerateFunctionMethod("HelloThereClass"))}}
-                {{ExtensionGenerateClassContentArray("ClassArray", sz_m_formattableString)}}
+                {{GenerateLicenseApacheV2(model.i32_licenseYear, model.str_licenseOwner)}}   
+                {{GenerateContent()}}
             }
             """;
-    }        
-
-    FormattableString GenerateConcurentValueConstants() {
-
-    string[] sz_str_othervalueFunction = new string[] { "ResetSpecificValueDefault", "ResetSpecificValueMin", "ResetSpecificValueMax" };
-
-    FormattableString myMethod = $$"""
-    public void MethodName(){
-        //Fuck You
-    }
-    """;        
-
-    return $$"""
-    public class ConcurentValueConstants {
-        {{ExtensionGenerateFunctionMethod("HelloThere")}}        
-    }
-    """;
-
-    }    
+    }                
 
 
     //--EXTENSION-FOR-USAGE--
@@ -64,39 +104,31 @@
     * limitations under the License.          
     */
     """;
-    }
+    }    
 
-    FormattableString ExtensionGenerateClassContentArray(string _className, FormattableString[] _content = null) {
+    FormattableString ExtensionGenerateClassContentArray(string _className, bool _isPublic = true, FormattableString[] _content = null) {
+
+    string str_accessType = null;
+    if (_isPublic) str_accessType = "public";
+    else str_accessType = "private";
+
     return $$"""
-    public class {{_className}} {
+    {{str_accessType}} class {{_className}} {
         {{_content}}
     }
     """;
-    }
+    }    
 
-    FormattableString ExtensionGenerateClass(string _className, FormattableString _content = null) {
+    FormattableString ExtensionGenerateClass(string _className, bool _isPublic = true, FormattableString _content = null) {
+
+    string str_accessType = null;
+    if (_isPublic) str_accessType = "public";
+    else str_accessType = "private";
+
     return $$"""
-    public class {{_className}} {        
+    {{str_accessType}} class {{_className}} {        
         {{_content}}
     }
     """;
-    }
-
-    FormattableString ExtensionGenerateClassPrivate(string _className, FormattableString _content = null) {
-    return $$"""
-    private class {{_className}} {
-        {{_content}}
-    }
-    """;
-    }
-
-    FormattableString ExtensionGenerateFunctionMethod(string _functionName, FormattableString _content = null) {
-    return $$"""
-    public void {{_functionName}}() {        
-        {{_content}}
-    }
-    """;
-    }
-
-
+    }        
 }
