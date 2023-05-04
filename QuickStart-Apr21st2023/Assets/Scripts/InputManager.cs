@@ -103,7 +103,7 @@ public class InputManager : MonoBehaviour {
 
         //Add and replace all the input here
         if (Input.GetMouseButtonDown(0) || Input.GetMouseButtonDown(1) || Input.GetMouseButtonDown(2)) HandleLogicClickTap();
-        if (Input.GetMouseButton(0) || Input.GetMouseButton(1) || Input.GetMouseButton(2)) HandleLogicClickTap();
+        if (Input.GetMouseButton(0) || Input.GetMouseButton(1) || Input.GetMouseButton(2)) HandleLogicHoldStationary();
         if (Input.GetMouseButtonUp(0) || Input.GetMouseButtonUp(1) || Input.GetMouseButtonUp(2)) HandleLogicRelease();
     }
 
