@@ -1,9 +1,29 @@
 ﻿public class MockTestCodeGen {
 
+    public class ConcurentValueObject<T> {
+        private string str_name;
+        private T t_min;
+        private T t_max;
+        private T t_default;
+
+        public ConcurentValueObject(string _name, T _min, T _max, T _default) {
+            str_name = _name;
+            t_min = _min;
+            t_max = _max;
+            t_default = _default;
+        }
+
+        public string GetName() { return str_name; }
+        public T GetValueMin() { return t_min; }
+        public T GetValueMax() { return t_max; }
+        public T GetValueDefault() { return t_default; }
+    }
+
     public enum ENUM_CODEGEN_ACCESS_TYPE {
         K_PUBLIC,
         K_PRIVATE,
-        K_PROTECTED
+        K_PROTECTED,
+        K_PRIVATE_STATIC_READONLY
     }
 
     public enum ENUM_CODEGEN_VARIABLE_TYPE {
@@ -21,6 +41,7 @@
             case ENUM_CODEGEN_ACCESS_TYPE.K_PUBLIC: return "public";
             case ENUM_CODEGEN_ACCESS_TYPE.K_PRIVATE: return "private";
             case ENUM_CODEGEN_ACCESS_TYPE.K_PROTECTED: return "protected";
+            case ENUM_CODEGEN_ACCESS_TYPE.K_PRIVATE_STATIC_READONLY: return "private static readonly";
             default: return null;
         }
     }
@@ -55,12 +76,12 @@
     string[] sz_str_othervalueFunction = new string[] { "ResetSpecificValueDefault", "ResetSpecificValueMin", "ResetSpecificValueMax" };
 
     FormattableString[] sz_m_formattableString = new FormattableString[] {
-        ExtensionGenerateFunctionMethod(ENUM_CODEGEN_ACCESS_TYPE.K_PUBLIC, ENUM_CODEGEN_VARIABLE_TYPE.K_ARRAY_INT, "HelloThereClass"),        
+        ExtensionGenerateFunctionMethod(ENUM_CODEGEN_ACCESS_TYPE.K_PRIVATE_STATIC_READONLY, ENUM_CODEGEN_VARIABLE_TYPE.K_ARRAY_FLOAT, "MethodSomething"),        
     };
 
     //Return all result here
     return $$"""    
-    {{ExtensionGenerateClassContentArray("ClassArray", true, sz_m_formattableString)}}    
+    {{ExtensionGenerateClassContentArray("TestingClassArray", true, sz_m_formattableString)}}    
     """;
     }
 

@@ -4,10 +4,30 @@ using UnityEngine;
 
 public class MockTestScript : MonoBehaviour
 {
+    public class ConcurentValueObject<T> {
+        private string str_name;
+        private T t_min;
+        private T t_max;
+        private T t_default;
+
+        public ConcurentValueObject(string _name, T _min, T _max, T _default) {
+            str_name = _name;
+            t_min = _min;
+            t_max = _max;
+            t_default = _default;
+        }
+
+        public string GetName() { return str_name; }
+        public T GetValueMin() { return t_min; }
+        public T GetValueMax() { return t_max; }
+        public T GetValueDefault() { return t_default; }
+    }
+
     public enum ENUM_CODEGEN_ACCESS_TYPE {
         K_PUBLIC,
         K_PRIVATE,
-        K_PROTECTED
+        K_PROTECTED,
+        K_PRIVATE_STATIC_READONLY
     }
 
     public enum ENUM_CODEGEN_VARIABLE_TYPE {
@@ -25,6 +45,7 @@ public class MockTestScript : MonoBehaviour
             case ENUM_CODEGEN_ACCESS_TYPE.K_PUBLIC: return "public";
             case ENUM_CODEGEN_ACCESS_TYPE.K_PRIVATE: return "private";
             case ENUM_CODEGEN_ACCESS_TYPE.K_PROTECTED: return "protected";
+            case ENUM_CODEGEN_ACCESS_TYPE.K_PRIVATE_STATIC_READONLY: return "private static readonly";                
             default: return null;
         }
     }
@@ -45,7 +66,7 @@ public class MockTestScript : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        ConcurentValueObject<int> intObject = new ConcurentValueObject<int>("K_COIN", 0, 100, 0);
     }
 
     // Update is called once per frame
