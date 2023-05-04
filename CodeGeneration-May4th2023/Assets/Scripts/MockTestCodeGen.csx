@@ -59,8 +59,13 @@
         }
     }    
 
-    FormattableString ExtensionGenerateFunctionMethod(ENUM_CODEGEN_ACCESS_TYPE _accessType, ENUM_CODEGEN_VARIABLE_TYPE _variType, string _functionName, FormattableString _content = null) {
-   
+    FormattableString ExtensionGenerateConcurent<T>(ConcurentValueObject<T> concurentValueObject) {   
+    return $$""" 
+    private static readonly {{typeof(T).ToString()}}[] {{concurentValueObject.GetName}} = { {{concurentValueObject.GetValueMin()}}, {{concurentValueObject.GetValueMax}}, {{concurentValueObject.GetValueDefault}} };
+    """;
+    }
+
+    FormattableString ExtensionGenerateFunctionMethod(ENUM_CODEGEN_ACCESS_TYPE _accessType, ENUM_CODEGEN_VARIABLE_TYPE _variType, string _functionName, FormattableString _content = null) {   
     return $$"""
     {{GetStringAccessType(_accessType)}} {{GetStringVariableType(_variType)}} {{_functionName}}() {        
         {{_content}}
@@ -73,10 +78,12 @@
 
     FormattableString GenerateContent() {
 
-    string[] sz_str_othervalueFunction = new string[] { "ResetSpecificValueDefault", "ResetSpecificValueMin", "ResetSpecificValueMax" };
+    string[] sz_str_othervalueFunction = new string[] { "ResetSpecificValueDefault", "ResetSpecificValueMin", "ResetSpecificValueMax" };    
+    ConcurentValueObject<int> intObject = new ConcurentValueObject<int>("K_COIN", 0, 100, 0);
 
     FormattableString[] sz_m_formattableString = new FormattableString[] {
         ExtensionGenerateFunctionMethod(ENUM_CODEGEN_ACCESS_TYPE.K_PRIVATE_STATIC_READONLY, ENUM_CODEGEN_VARIABLE_TYPE.K_ARRAY_FLOAT, "MethodSomething"),        
+        ExtensionGenerateConcurent(intObject),
     };
 
     //Return all result here

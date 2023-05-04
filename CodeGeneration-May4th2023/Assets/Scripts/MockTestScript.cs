@@ -74,4 +74,8 @@ public class MockTestScript : MonoBehaviour
     {
         
     }
+
+    public void GetSomeStuff(ConcurentValueObject<T> concurentValueObject) {
+
+    }
 }

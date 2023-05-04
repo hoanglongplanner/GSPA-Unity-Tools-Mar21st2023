@@ -18,5 +18,7 @@
         private static readonly float[] MethodSomething() {
 
         }
+
+        private static readonly System.Int32[] K_COIN = { 0, 100, 0 };
     }
 }
