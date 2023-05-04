@@ -25,6 +25,34 @@
         public T GetValueDefault() { return t_default; }
     }
 
+    public class ConcurentValueRateObject<T> {
+        private string str_namePrefix;
+        private string str_nameNoPrefix;
+        private ENUM_CODEGEN_VARIABLE_TYPE enum_variableType;
+        private T[] sz_t_value;
+
+        public ConcurentValueRateObject(string _namePrefix, string _nameNoPrefix, ENUM_CODEGEN_VARIABLE_TYPE _variableType, T[] _value) {
+            str_namePrefix = _namePrefix;
+            str_nameNoPrefix = _nameNoPrefix;
+            enum_variableType = _variableType;
+            sz_t_value = _value;
+        }
+
+        public string GetNameWithPrefix() { return str_namePrefix; }
+        public string GetNameNoPrefix() { return str_nameNoPrefix; }
+        public string GetVariableName() { return GetStringVariableType(enum_variableType); }
+        public T GetValue(ENUM_RATE_TYPE _type) { return sz_t_value[(int)_type]; }
+        public T GetValueRandom() { return sz_t_value[Random.Range(0, sz_t_value.Length)]; }
+    }
+
+    public enum ENUM_RATE_TYPE {
+        K_MIN,
+        K_MEDIUM_01,
+        K_MEDIUM_02,
+        K_MEDIUM_03,
+        K_MAX
+    }
+
     public enum ENUM_CODEGEN_ACCESS_TYPE {
         K_PUBLIC,
         K_PRIVATE,
