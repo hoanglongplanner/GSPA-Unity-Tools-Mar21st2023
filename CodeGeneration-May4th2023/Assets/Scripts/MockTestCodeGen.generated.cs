@@ -1,4 +1,4 @@
-﻿namespace CustomPlaceholderName {
+﻿namespace PlaceholderNamespaceName {
     /*
     * Copyright (C) 2023 HOANGLONGPLANNER
     *
@@ -15,18 +15,36 @@
     * limitations under the License.
     */
     public class ConcurentClassConstants {
-        private static readonly float[] MethodSomething() {
+        public float[] MethodSomething() {
 
         }
 
-        private static readonly int[] K_COIN = { 0, 100, 0 };
-        public static int GetValueMinCoin () { return K_COIN[0]; }
-        public static int GetValueMaxCoin () { return K_COIN[1]; }
-        public static int GetValueDefaultCoin () { return K_COIN[2]; }
+        private static readonly int[] K_COIN = { 0, 2147483647, 0 };
+        public static int GetValueMinCoin() { return K_COIN[0]; }
+        public static int GetValueMaxCoin() { return K_COIN[1]; }
+        public static int GetValueDefaultCoin() { return K_COIN[2]; }
+
+        private static readonly int[] K_HIGHSCORE = { 0, 2147483647, 0 };
+        public static int GetValueMinHighscore() { return K_HIGHSCORE[0]; }
+        public static int GetValueMaxHighscore() { return K_HIGHSCORE[1]; }
+        public static int GetValueDefaultHighscore() { return K_HIGHSCORE[2]; }
+
+        private static readonly int[] K_COMBO = { 0, 2147483647, 0 };
+        public static int GetValueMinCombo() { return K_COMBO[0]; }
+        public static int GetValueMaxCombo() { return K_COMBO[1]; }
+        public static int GetValueDefaultCombo() { return K_COMBO[2]; }
 
         private static readonly float[] K_FEVER = { 0, 100, 0 };
-        public static float GetValueMinFever () { return K_FEVER[0]; }
-        public static float GetValueMaxFever () { return K_FEVER[1]; }
-        public static float GetValueDefaultFever () { return K_FEVER[2]; }
+        public static float GetValueMinFever() { return K_FEVER[0]; }
+        public static float GetValueMaxFever() { return K_FEVER[1]; }
+        public static float GetValueDefaultFever() { return K_FEVER[2]; }
+
+        public enum ENUM_RATE_TYPE {
+            K_MIN,
+            K_MEDIUM_01,
+            K_MEDIUM_02,
+            K_MEDIUM_03,
+            K_MAX,
+        }
     }
 }

@@ -27,7 +27,7 @@ public class MockTestScript : MonoBehaviour
         public T GetValueMin() { return t_min; }
         public T GetValueMax() { return t_max; }
         public T GetValueDefault() { return t_default; }
-    }
+    }    
 
     public class ConcurentValueRateObject<T> {
         private string str_namePrefix;
@@ -46,7 +46,10 @@ public class MockTestScript : MonoBehaviour
         public string GetNameNoPrefix() { return str_nameNoPrefix; }
         public string GetVariableName() { return GetStringVariableType(enum_variableType); }
         public T GetValue(ENUM_RATE_TYPE _type) { return sz_t_value[(int)_type]; }
-        public T GetValueRandom() { return sz_t_value[Random.Range(0, sz_t_value.Length)]; }
+        public T GetValueRandom() {
+            System.Random random = new System.Random();
+            return sz_t_value[random.Next(0, sz_t_value.Length)]; 
+        }
     }
 
     public enum ENUM_RATE_TYPE {
@@ -74,6 +77,19 @@ public class MockTestScript : MonoBehaviour
         K_ARRAY_BOOL,        
     }
 
+    public class EnumObject {
+        private string str_name;
+        private string[] sz_str_content;
+
+        public EnumObject(string _name, string[] _content) {
+            str_name = _name;
+            sz_str_content = _content;
+        }
+
+        public string GetName() { return str_name; }
+        public string[] GetContent() { return sz_str_content; }
+    }
+
     public string GetStringAccessType(ENUM_CODEGEN_ACCESS_TYPE _type) {
         switch (_type) {
             case ENUM_CODEGEN_ACCESS_TYPE.K_PUBLIC: return "public";
@@ -97,19 +113,8 @@ public class MockTestScript : MonoBehaviour
         }
     }
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        ConcurentValueObject<int> intObject = new ConcurentValueObject<int>("K_COIN", 0, 100, 0);
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
-    public void GetSomeStuff(ConcurentValueObject<T> concurentValueObject) {
-
+    private void Start() {
+        string[] sz_str_rate = new string[] { "MIN", "MEDIUM_01", "MEDIUM_02", "MEDIUM_03", "MAX" };
+        EnumObject enumRateObj = new EnumObject("ENUM_RATE_TYPE", sz_str_rate);
     }
 }
