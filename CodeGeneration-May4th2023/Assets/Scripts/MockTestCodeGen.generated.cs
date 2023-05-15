@@ -46,5 +46,15 @@
             K_MEDIUM_03,
             K_MAX,
         }
+
+        public void GetSomething(ENUM_RATE_TYPE _type) {
+            switch (_type) {
+                case ENUM_RATE_TYPE.K_MIN: break;
+                case ENUM_RATE_TYPE.K_MEDIUM_01: break;
+                case ENUM_RATE_TYPE.K_MEDIUM_02: break;
+                case ENUM_RATE_TYPE.K_MEDIUM_03: break;
+                case ENUM_RATE_TYPE.K_MAX: break;
+            }
+        }
     }
 }

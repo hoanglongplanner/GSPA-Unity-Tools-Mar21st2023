@@ -133,6 +133,7 @@
     """;
     }
 
+
     FormattableString ExtGenerateSwitchCaseEnum(EnumObject _enumObject) {   
     return $$"""
     switch (_type) {
@@ -141,10 +142,27 @@
     """;
     }
 
-    FormattableString ExtGenerateSwitchCaseEnumContent(EnumObject _enumObject, string _singleEnumName) {   
+    FormattableString ExtGenerateSwitchCaseEnumMethod(ENUM_CODEGEN_ACCESS_TYPE _accessType, ENUM_CODEGEN_VARIABLE_TYPE _variType, string _functionName, EnumObject _enumObject) {   
     return $$"""
-    case {{_enumObject.GetName()}}.{{_singleEnumName}}:
-    break;
+    {{GetStringAccessType(_accessType)}} {{GetStringVariableType(_variType)}} {{_functionName}}({{_enumObject.GetName()}} _type) {
+        switch (_type) {
+            {{_enumObject.GetContent().ToList().Select(t => ExtGenerateSwitchCaseEnumContent(_enumObject,t))}}
+        }    
+    }
+    """;
+    }
+
+    FormattableString ExtGenerateFunctionMethod(ENUM_CODEGEN_ACCESS_TYPE _accessType, ENUM_CODEGEN_VARIABLE_TYPE _variType, string _functionName, FormattableString _content = null) {   
+    return $$"""
+    {{GetStringAccessType(_accessType)}} {{GetStringVariableType(_variType)}} {{_functionName}}() {        
+        {{_content}}
+    }
+    """;
+    }    
+
+    FormattableString ExtGenerateSwitchCaseEnumContent(EnumObject _enumObject, string _singleEnumName, FormattableString[] _content = null) {   
+    return $$"""
+    case {{_enumObject.GetName()}}.K_{{_singleEnumName}}: break;
     """;
     }
 
@@ -188,6 +206,7 @@
         ExtGenerateConcurent(concurentFever),
         ExtGenerateEnum(ENUM_CODEGEN_ACCESS_TYPE.K_PUBLIC, enumRateObj),
         //ExtGenerateSwitchCaseEnum(enumRateObj),
+        ExtGenerateSwitchCaseEnumMethod(ENUM_CODEGEN_ACCESS_TYPE.K_PUBLIC, ENUM_CODEGEN_VARIABLE_TYPE.K_VOID, "GetSomething", enumRateObj),
     };
 
     //Return all result here

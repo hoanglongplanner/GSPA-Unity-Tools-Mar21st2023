@@ -29,15 +29,12 @@ public class GUIElementSlider : MonoBehaviour, IPointerClickHandler, IPointerEnt
     [SerializeField] private Slider m_slider;
     [SerializeField] private bool isMouseHover = false;
 
+    public void SetGUIManager(GUIManager _guiManager) => m_guiManager = _guiManager;
     public void Setup() {
-        m_slider = this.GetComponent<Slider>();        
-
-        m_slider.onValueChanged.AddListener(delegate { GUIManager.Instance.OnGUIElementSlider(this, enum_type); });        
-
-        GUIManager.Instance.OnGUIElementSlider(this, enum_type);
+        m_slider = this.GetComponent<Slider>();
+        m_slider.onValueChanged.AddListener(delegate { m_guiManager.OnGUIElementSlider(this, enum_type); });
+        m_guiManager.OnGUIElementSlider(this, enum_type);
     }
-
-    public void InitSetup(GUIManager _guiManager) => m_guiManager = _guiManager;
 
     public void SetupSlider(float min, float max, float defaultValue, bool isWholeNumber = false) {
         m_slider.wholeNumbers = isWholeNumber;
@@ -47,22 +44,27 @@ public class GUIElementSlider : MonoBehaviour, IPointerClickHandler, IPointerEnt
     }
 
     public bool IsType(ENUM_GUIELEMENT_SLIDER_TYPE _type) { return _type == enum_type; }
+    public ENUM_GUIELEMENT_SLIDER_TYPE GetTypeSlider() { return enum_type; }
+
+    private void Update() {
+        if (isMouseHover && GUISettings.K_ENABLE_POINTER_ON_MOUSE_HOVER) {
+            m_guiManager.GUIElementSliderManager(ENUM_GUIELEMENT_POINTER_STATUS.ON_HOVER);
+        }
+    }
 
     public float GetValue() { return m_slider.value; }
 
-    public void SetActive(bool status) {
-        this.transform.gameObject.SetActive(status);
-    }
+    public void SetActive(bool status) => this.transform.gameObject.SetActive(status);
 
-    public void OnPointerClick(PointerEventData eventData) => GUIManager.Instance.GUIElementSliderManager(ENUM_GUIELEMENT_POINTER_STATUS.ON_MOUSE_DOWN);
+    public void OnPointerClick(PointerEventData eventData) => m_guiManager.GUIElementSliderManager(ENUM_GUIELEMENT_POINTER_STATUS.ON_MOUSE_DOWN);
 
-    public void OnPointerEnter(PointerEventData eventData) {        
+    public void OnPointerEnter(PointerEventData eventData) {
         isMouseHover = true;
-        GUIManager.Instance.GUIElementSliderManager(ENUM_GUIELEMENT_POINTER_STATUS.ON_ENTER_HOVER);
+        m_guiManager.GUIElementSliderManager(ENUM_GUIELEMENT_POINTER_STATUS.ON_ENTER);
     }
 
     public void OnPointerExit(PointerEventData eventData) {
         isMouseHover = false;
-        GUIManager.Instance.GUIElementSliderManager(ENUM_GUIELEMENT_POINTER_STATUS.ON_EXIT);
-    }    
+        m_guiManager.GUIElementSliderManager(ENUM_GUIELEMENT_POINTER_STATUS.ON_EXIT);
+    }
 }

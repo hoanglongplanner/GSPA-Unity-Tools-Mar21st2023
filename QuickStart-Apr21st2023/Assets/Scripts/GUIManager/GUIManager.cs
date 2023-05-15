@@ -25,24 +25,29 @@ using UnityEngine.EventSystems;
 public class GUISettings {
     public static bool K_USING_SINGLETON_GUIMANAGER = false; //def: false
     public static bool K_ENABLE_AUTOSETUP_GUIELEMENT = false; //def: false    
+    public static bool K_ENABLE_POINTER_ON_MOUSE_ENTER = true; //def: true    
+    public static bool K_ENABLE_POINTER_ON_MOUSE_HOVER = false; //def: false
+    public static bool K_ENABLE_POINTER_ON_MOUSE_EXIT = true; //def: true
     public static bool K_ENABLE_POINTER_ON_MOUSE_DOWN = true; //def: true
     public static bool K_ENABLE_POINTER_ON_MOUSE_HOLD = false; //def: false
-    public static bool K_ENABLE_POINTER_ON_MOUSE_RELEASE = false; //def: false                                                           
-    public static bool K_ENABLE_POINTER_ON_ENTER_HOVER = true; //def: true    
-    public static bool K_ENABLE_POINTER_ON_EXIT = true; //def: true
+    public static bool K_ENABLE_POINTER_ON_MOUSE_RELEASE = false; //def: false                                                               
 }
 
 public enum ENUM_GUIPAGE_TYPE {
     K_MAIN_MENU,
     K_GAMEPLAY,
-    K_WIN,
-    K_LOSE
+    K_RESULT_DRAW,
+    K_RESULT_WIN,
+    K_RESULT_LOSE
 }
 
 public enum ENUM_GUIELEMENT_POINTER_STATUS {
-    ON_MOUSE_DOWN,
-    ON_ENTER_HOVER,
-    ON_EXIT
+    ON_ENTER,
+    ON_HOVER,
+    ON_EXIT,
+    ON_MOUSE_DOWN,    
+    ON_MOUSE_HOLD,
+    ON_MOUSE_RELEASE
 }
 
 public enum ENUM_GUIELEMENT_OBJECT_TYPE {
@@ -52,7 +57,7 @@ public enum ENUM_GUIELEMENT_OBJECT_TYPE {
 
 public enum ENUM_GUIELEMENT_BUTTON_TYPE {
     FUNCTION_LOADSCENE_MAINMENU,
-    FUNCTION_LOADSCENE_GAMEPLAY,    
+    FUNCTION_LOADSCENE_GAMEPLAY,
     FUNCTION_RESTART_GAME,
     FUNCTION_EXITGAME
 }
@@ -71,9 +76,8 @@ public enum ENUM_GUIELEMENT_SLIDER_TYPE {
     LEVEL_PROGRESSION
 }
 
-public class GUIManager : SingletonBlankMonoBehavior<GUIManager> {
-
-    [SerializeField] private GameObject[] sz_m_page; //TODO - REMOVE
+public class GUIManager : MonoBehaviour {
+    [SerializeField] private bool isSingleton = false; //functionality as singleton from inspector
 
     [SerializeField] private List<GUIPage> list_m_guiPage;
     [SerializeField] private List<GUIElementObject> list_m_guiObject;
@@ -81,26 +85,49 @@ public class GUIManager : SingletonBlankMonoBehavior<GUIManager> {
     [SerializeField] private List<GUIElementButton> list_m_guiButton;
     [SerializeField] private List<GUIElementSlider> list_m_guiSlider;
 
-    private void Awake() => SetupGUIManager(this.transform, true);    
-
-    private void Start() => UpdateGUIElementObject(ENUM_GUIELEMENT_OBJECT_TYPE.TIMER);
+    private void Awake() => SetupGUIManager(this.transform, true);
 
     public void OpenGUIPage(ENUM_GUIPAGE_TYPE _type, bool _isCloseAllPage = true) {
 
-        if (_isCloseAllPage) foreach (GameObject page in sz_m_page) page.SetActive(false);
+        //--CLOSE-PAGE-FUNCTIONALITY--
+        if (_isCloseAllPage) CloseGUIPageAll();
 
-        else if(_isCloseAllPage == false) {
-            switch (_type) {
-                case ENUM_GUIPAGE_TYPE.K_WIN: break;
-                case ENUM_GUIPAGE_TYPE.K_LOSE: break;
+        else if (_isCloseAllPage == false) {
+            switch (_type) {                
+                case ENUM_GUIPAGE_TYPE.K_MAIN_MENU: break;
+                case ENUM_GUIPAGE_TYPE.K_GAMEPLAY: break;
+                case ENUM_GUIPAGE_TYPE.K_RESULT_DRAW: break;
+                case ENUM_GUIPAGE_TYPE.K_RESULT_WIN: break;
+                case ENUM_GUIPAGE_TYPE.K_RESULT_LOSE: break;
                 default: break;
             }
         }
 
-        switch (_type) {
-            case ENUM_GUIPAGE_TYPE.K_WIN: sz_m_page[(int)ENUM_GUIPAGE_TYPE.K_WIN].SetActive(true); break;
-            case ENUM_GUIPAGE_TYPE.K_LOSE: sz_m_page[(int)ENUM_GUIPAGE_TYPE.K_LOSE].SetActive(true); break;
+        switch (_type) {            
+            case ENUM_GUIPAGE_TYPE.K_MAIN_MENU: OpenGUIPageSpecific(ENUM_GUIPAGE_TYPE.K_MAIN_MENU); break;
+            case ENUM_GUIPAGE_TYPE.K_GAMEPLAY: OpenGUIPageSpecific(ENUM_GUIPAGE_TYPE.K_GAMEPLAY); break;
+            case ENUM_GUIPAGE_TYPE.K_RESULT_DRAW: OpenGUIPageSpecific(ENUM_GUIPAGE_TYPE.K_RESULT_DRAW); break;
+            case ENUM_GUIPAGE_TYPE.K_RESULT_WIN: OpenGUIPageSpecific(ENUM_GUIPAGE_TYPE.K_RESULT_WIN); break;
+            case ENUM_GUIPAGE_TYPE.K_RESULT_LOSE: OpenGUIPageSpecific(ENUM_GUIPAGE_TYPE.K_RESULT_LOSE); break;
             default: break;
+        }
+    }
+
+    public void OpenGUIPageSpecific(ENUM_GUIPAGE_TYPE _type) {
+        foreach (GUIPage guiPage in GetAllGUIPageOfType(_type)) {
+            guiPage.SetStatusPageActive(true);
+        }
+    }
+
+    public void CloseGUIPageAll() {
+        foreach (GUIPage guiPage in list_m_guiPage) {
+            guiPage.SetStatusPageActive(false);
+        }
+    }
+
+    public void CloseGUIPageSpecific(ENUM_GUIPAGE_TYPE _type) {
+        foreach (GUIPage guiPage in GetAllGUIPageOfType(_type)) {
+            guiPage.SetStatusPageActive(false);
         }
     }
 
@@ -114,24 +141,49 @@ public class GUIManager : SingletonBlankMonoBehavior<GUIManager> {
         }
     }
 
+    /// <summary>
+    /// Check whole gui element for components
+    /// </summary>    
     private void CheckGUIElement(Transform _target) {
+        GUIPage guiPage = _target.GetComponent<GUIPage>();
+        if (guiPage != null) {
+            list_m_guiPage.Add(guiPage);
+        }
+
         GUIElementObject guiObject = _target.GetComponent<GUIElementObject>();
-        if (guiObject != null) list_m_guiObject.Add(guiObject);
+        if (guiObject != null) {
+            list_m_guiObject.Add(guiObject);
+            guiObject.SetGUIManager(this);
+        }
 
         GUIElementText guiText = _target.GetComponent<GUIElementText>();
-        if (guiText != null) { 
+        if (guiText != null) {
             list_m_guiText.Add(guiText);
+            guiText.SetGUIManager(this);
             guiText.Setup();
         }
 
         GUIElementButton guiButton = _target.GetComponent<GUIElementButton>();
-        if (guiButton != null) list_m_guiButton.Add(guiButton);
+        if (guiButton != null) {
+            list_m_guiButton.Add(guiButton);
+            guiButton.SetGUIManager(this);
+        }
 
         GUIElementSlider guiSlider = _target.GetComponent<GUIElementSlider>();
         if (guiSlider != null) {
             list_m_guiSlider.Add(guiSlider);
+            guiSlider.SetGUIManager(this);
             guiSlider.Setup();
         }
+    }
+
+    public List<GUIPage> GetAllGUIPageOfType(ENUM_GUIPAGE_TYPE _type) {
+        List<GUIPage> temp = new List<GUIPage>();
+        foreach (GUIPage guiPage in list_m_guiPage) {
+            if (guiPage.IsType(_type))
+                temp.Add(guiPage);
+        }
+        return temp; //return-result
     }
 
     public List<GUIElementObject> GetAllGUIElementObjectOfType(ENUM_GUIELEMENT_OBJECT_TYPE _type) {
@@ -202,10 +254,10 @@ public class GUIManager : SingletonBlankMonoBehavior<GUIManager> {
                 //AudioManager.Instance.PlaySFX_UI(ENUM_AUDIO_SFX_UI_TYPE.SELECT);
 
                 switch (_buttonType) {
-                    case ENUM_GUIELEMENT_BUTTON_TYPE.FUNCTION_LOADSCENE_MAINMENU: SceneLevelManager.LoadSceneSpecific(ENUM_SCENE_LEVEL_TYPE.K_MAINMENU); break;
-                    case ENUM_GUIELEMENT_BUTTON_TYPE.FUNCTION_LOADSCENE_GAMEPLAY: SceneLevelManager.LoadSceneSpecific(ENUM_SCENE_LEVEL_TYPE.K_GAMEPLAY); break;                    
+                    case ENUM_GUIELEMENT_BUTTON_TYPE.FUNCTION_LOADSCENE_MAINMENU: SceneLevelManager.LoadSceneSpecific(ENUM_SCENE_GAME_LEVEL_TYPE.K_MAINMENU); break;
+                    case ENUM_GUIELEMENT_BUTTON_TYPE.FUNCTION_LOADSCENE_GAMEPLAY: SceneLevelManager.LoadSceneSpecific(ENUM_SCENE_GAME_LEVEL_TYPE.K_GAMEPLAY); break;
                     case ENUM_GUIELEMENT_BUTTON_TYPE.FUNCTION_RESTART_GAME: SceneLevelManager.LoadSceneCurrentAutoBuildIndex(); break;
-                    case ENUM_GUIELEMENT_BUTTON_TYPE.FUNCTION_EXITGAME:                        
+                    case ENUM_GUIELEMENT_BUTTON_TYPE.FUNCTION_EXITGAME:
                         if (Application.platform != RuntimePlatform.WebGLPlayer)
                             Application.Quit();
                         break;
@@ -213,7 +265,7 @@ public class GUIManager : SingletonBlankMonoBehavior<GUIManager> {
                 }
                 break;
 
-            case ENUM_GUIELEMENT_POINTER_STATUS.ON_ENTER_HOVER:
+            case ENUM_GUIELEMENT_POINTER_STATUS.ON_ENTER:
                 //AudioManager.Instance.PlaySFX_UI(ENUM_AUDIO_SFX_UI_TYPE.HOVER);
                 break;
 
@@ -234,7 +286,7 @@ public class GUIManager : SingletonBlankMonoBehavior<GUIManager> {
             case ENUM_GUIELEMENT_POINTER_STATUS.ON_MOUSE_DOWN:
                 //AudioManager.Instance.PlaySFX_UI(ENUM_AUDIO_SFX_UI_TYPE.SELECT);
                 break;
-            case ENUM_GUIELEMENT_POINTER_STATUS.ON_ENTER_HOVER:
+            case ENUM_GUIELEMENT_POINTER_STATUS.ON_ENTER:
                 //AudioManager.Instance.PlaySFX_UI(ENUM_AUDIO_SFX_UI_TYPE.HOVER);
                 break;
             case ENUM_GUIELEMENT_POINTER_STATUS.ON_EXIT:
@@ -249,7 +301,7 @@ public class GUIManager : SingletonBlankMonoBehavior<GUIManager> {
             case ENUM_GUIELEMENT_SLIDER_TYPE.FEVER:
                 //_slider.SetupSlider(0.0f, 100.0f, ManagerGameValue.Instance.GetValueFever(), false);
                 break;
-            case ENUM_GUIELEMENT_SLIDER_TYPE.OBSTACLE_LEFT: 
+            case ENUM_GUIELEMENT_SLIDER_TYPE.OBSTACLE_LEFT:
                 //_slider.SetupSlider(0.0f, 100.0f, ManagerGameValue.Instance.GetValueObstacleLeft()); 
                 break;
             case ENUM_GUIELEMENT_SLIDER_TYPE.LEVEL_PROGRESSION:
@@ -257,5 +309,5 @@ public class GUIManager : SingletonBlankMonoBehavior<GUIManager> {
                 break;
             default: break;
         }
-    }    
+    }
 }
